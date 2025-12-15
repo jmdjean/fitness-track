@@ -7,26 +7,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent {
-  loginForm!: FormGroup;
+  signupForm: FormGroup = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    birthdate: ['', Validators.required],
+  });
 
-  constructor(private formBuilder: FormBuilder) {
-    this.generateForm();
-  }
+  constructor(private formBuilder: FormBuilder) {}
 
-  generateForm(): void {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-    });
-  }
-
-  execLogin(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
+  submit(): void {
+    if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
       return;
     }
 
-    const { email, password } = this.loginForm.value;
-    console.log('Login payload', { email, password });
+    const { email, password, birthdate } = this.signupForm.value;
+    console.log('Signup payload', { email, password, birthdate });
   }
 }

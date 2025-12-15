@@ -5,3 +5,14 @@ body {
   height: 100%;
   margin: 0;
 }
+
+input::placeholder,
+textarea::placeholder,
+.mat-mdc-input-element::placeholder {
+  font-size: 0.3em;
+}
+
+.mat-mdc-form-field .mdc-floating-label,
+.mat-mdc-form-field .mdc-floating-label--float-above {
+  font-size: 0.75em !important;
+}

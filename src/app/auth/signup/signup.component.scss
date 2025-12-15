@@ -7,8 +7,7 @@
   padding: 1.5rem 1rem;
   background: #0d1117;
   color: #c9d1d9;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
-    Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   overflow: hidden;
 }
 
@@ -18,6 +17,23 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  position: relative;
+}
+
+.top-cta {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #c9d1d9;
+}
+
+.top-cta .link {
+  font-size: 0.9rem;
+  text-decoration: underline;
 }
 
 .logo-circle {
@@ -46,14 +62,14 @@ h1 {
   text-align: center;
 }
 
-.login-card,
-.signup-card {
+.login-card {
   width: 320px;
   background: #161b22;
   color: #c9d1d9;
   border: 1px solid #21262d;
   border-radius: 8px;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+  margin: 0 auto;
 }
 
 .login-card mat-card-content {
@@ -64,17 +80,12 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  width: 100%;
 }
 
 .full-width-input {
   width: 100%;
-}
-
-.form-footer {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.8rem;
-  margin-right: 0.35rem;
+  display: block;
 }
 
 .signin-btn {
@@ -90,15 +101,6 @@ h1 {
   background: #26313f;
   border-color: #26313f;
   color: #7a8493;
-}
-
-.signup-card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.85rem;
-  font-size: 0.85rem;
 }
 
 .link {
