@@ -1,0 +1,26 @@
+mat-sidenav-container {
+  height: 100vh;
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.brand {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.side-nav-links {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}

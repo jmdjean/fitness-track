@@ -1,8 +1,21 @@
 <mat-sidenav-container>
-  <mat-sidenav>
-      teste
+  <mat-sidenav #sidenav mode="over" role="navigation">
+    <nav class="side-nav-links">
+      <button mat-button routerLink="/training" (click)="sidenav.close()">Treinos</button>
+      <button mat-button routerLink="/new-training" (click)="sidenav.close()">Novo treino</button>
+      <button mat-button routerLink="/current-training" (click)="sidenav.close()">Treino atual</button>
+    </nav>
   </mat-sidenav>
   <mat-sidenav-content>
-    <router-outlet></router-outlet>
+    <mat-toolbar color="primary" class="app-toolbar">
+      <button mat-icon-button aria-label="Abrir menu" (click)="onToggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="brand">Fitness Track</span>
+      <span class="spacer"></span>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
