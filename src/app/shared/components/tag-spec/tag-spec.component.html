@@ -1,0 +1,4 @@
+<span class="tag" [ngClass]="'tag-' + variant">
+	<mat-icon *ngIf="icon" class="tag-icon">{{ icon }}</mat-icon>
+	<span *ngIf="!icon" class="tag-text">{{ text }}</span>
+</span>

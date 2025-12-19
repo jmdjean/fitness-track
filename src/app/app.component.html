@@ -1,21 +1,35 @@
-<mat-sidenav-container>
-  <mat-sidenav #sidenav mode="over" role="navigation">
-    <nav class="side-nav-links">
-      <button mat-button routerLink="/training" (click)="sidenav.close()">Treinos</button>
-      <button mat-button routerLink="/new-training" (click)="sidenav.close()">Novo treino</button>
-      <button mat-button routerLink="/current-training" (click)="sidenav.close()">Treino atual</button>
-    </nav>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary" class="app-toolbar">
-      <button mat-icon-button aria-label="Abrir menu" (click)="onToggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span class="brand">Fitness Track</span>
-      <span class="spacer"></span>
-    </mat-toolbar>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<ng-container *ngIf="!isAuthPage; else authLayout">
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="over" role="navigation">
+      <nav class="side-nav-links">
+        <button mat-button routerLink="/training" (click)="sidenav.close()">
+          <mat-icon>fitness_center</mat-icon>
+          Fazer um treino
+        </button>
+        <button mat-button routerLink="/finished-traning" (click)="sidenav.close()">
+          <mat-icon>list</mat-icon>
+          Treinos feitos
+        </button>
+      </nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar color="primary" class="app-toolbar">
+        <button mat-icon-button aria-label="Abrir menu" (click)="onToggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span class="brand">Fitness Track</span>
+        <span class="spacer"></span>
+        <button mat-icon-button aria-label="Sair" (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </mat-toolbar>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>
+
+<ng-template #authLayout>
+  <router-outlet></router-outlet>
+</ng-template>

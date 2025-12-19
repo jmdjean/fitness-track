@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
@@ -11,7 +12,17 @@ export class AppComponent {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
+  constructor(private router: Router) {}
+
+  get isAuthPage(): boolean {
+    return this.router.url === '/login' || this.router.url === '/signup';
+  }
+
   onToggle(): void {
     this.sidenav.toggle();
+  }
+
+  onLogout(): void {
+    this.router.navigate(['/login']);
   }
 }

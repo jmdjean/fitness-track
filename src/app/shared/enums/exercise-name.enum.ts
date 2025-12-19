@@ -1,0 +1,15 @@
+export enum ExerciseName {
+  Burpee = 'Burpee',
+  Flexao = 'Flexao',
+  Abdominal = 'Abdominal',
+  Agachamento = 'Agachamento',
+  Polichinelo = 'Polichinelo',
+  Prancha = 'Prancha',
+  Triceps = 'Triceps',
+  Escalada = 'Escalada',
+  PularCorda = 'PularCorda',
+  Afundo = 'Afundo',
+  Remada = 'Remada',
+  JumpSquat = 'JumpSquat',
+  MountainClimber = 'MountainClimber',
+}
