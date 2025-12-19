@@ -1,1 +1,7 @@
-<p>current-training works!</p>
+
+  <h1>Hora do treino</h1>
+  <div class="timer-wrapper">
+    <span class="timer-value">{{ formatTime(remainingSeconds) }}</span>
+    <span class="timer-label">Tempo restante</span>
+  </div>
+  <button mat-raised-button color="warn" (click)="onStop()">Pare</button>

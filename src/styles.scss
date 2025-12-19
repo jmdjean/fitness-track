@@ -6,6 +6,13 @@ body {
   margin: 0;
 }
 
+/* Global font */
+html,
+body,
+app-root {
+  font-family: "Roboto", sans-serif;
+}
+
 input::placeholder,
 textarea::placeholder,
 .mat-mdc-input-element::placeholder {

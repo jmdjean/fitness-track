@@ -24,3 +24,10 @@ mat-sidenav-container {
   flex-direction: column;
   padding: 12px;
 }
+
+.side-nav-links button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+}

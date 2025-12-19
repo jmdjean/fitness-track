@@ -1,0 +1,44 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.tag-icon {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.tag-text {
+  display: inline-block;
+}
+
+.tag mat-icon {
+  color: #fff;
+}
+
+.tag-low {
+  background-color: #ef9a9a; /* lighter red */
+  color: #fff;
+}
+
+.tag-growing {
+  background-color: #81c784; /* lighter green */
+  color: #fff;
+}
+
+.tag-neutral {
+  background-color: #2a2a2a;
+  color: #e2e2e2;
+}
