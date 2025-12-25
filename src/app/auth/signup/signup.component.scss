@@ -63,7 +63,7 @@ h1 {
 }
 
 .login-card {
-  width: 320px;
+  width: min(420px, 100%);
   background: #161b22;
   color: #c9d1d9;
   border: 1px solid #21262d;
@@ -77,8 +77,8 @@ h1 {
 }
 
 .login-form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.9rem;
   width: 100%;
 }
@@ -86,6 +86,14 @@ h1 {
 .full-width-input {
   width: 100%;
   display: block;
+}
+
+.form-row {
+  width: 100%;
+}
+
+.span-2 {
+  grid-column: span 2;
 }
 
 .signin-btn {
@@ -136,5 +144,15 @@ mat-error {
   &::before,
   &::after {
     border-color: #21262d;
+  }
+}
+
+@media (max-width: 640px) {
+  .login-form {
+    grid-template-columns: 1fr;
+  }
+
+  .span-2 {
+    grid-column: span 1;
   }
 }

@@ -3,9 +3,10 @@ import { ExerciseName } from '../../shared/enums/exercise-name.enum';
 import { SelectedExercise } from '../../shared/models/selected-exercise.model';
 
 @Component({
-  selector: 'app-new-training',
-  templateUrl: './new-training.component.html',
-  styleUrls: ['./new-training.component.scss']
+    selector: 'app-new-training',
+    templateUrl: './new-training.component.html',
+    styleUrls: ['./new-training.component.scss'],
+    standalone: false
 })
 export class NewTrainingComponent {
   @Output() startTraining = new EventEmitter<SelectedExercise[]>();

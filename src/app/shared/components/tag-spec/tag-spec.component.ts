@@ -3,9 +3,10 @@ import { Component, Input } from '@angular/core';
 type TagSpecVariant = 'low' | 'growing' | 'neutral';
 
 @Component({
-  selector: 'app-tag-spec',
-  templateUrl: './tag-spec.component.html',
-  styleUrls: ['./tag-spec.component.scss'],
+    selector: 'app-tag-spec',
+    templateUrl: './tag-spec.component.html',
+    styleUrls: ['./tag-spec.component.scss'],
+    standalone: false
 })
 export class TagSpecComponent {
   @Input() text = '';

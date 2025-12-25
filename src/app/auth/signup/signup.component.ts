@@ -1,27 +1,61 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, signal } from '@angular/core';
+import { form, type FieldTree } from '@angular/forms/signals';
+import {
+  applyBodyMetricsValidation,
+  applyPasswordConfirmation,
+  applyRequiredDate,
+  applyRequiredEmail,
+  applyRequiredPassword,
+  type BodyMetrics,
+} from '../../shared/signal-forms/validators';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.scss'],
+    standalone: false
 })
 export class SignupComponent {
-  signupForm: FormGroup = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    birthdate: ['', Validators.required],
+  readonly signupModel = signal({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    birthdate: null as Date | null,
+    bodyMetrics: {
+      weightKg: null,
+      heightCm: null,
+    } as BodyMetrics,
   });
 
-  constructor(private formBuilder: FormBuilder) {}
+  readonly signupForm = form(this.signupModel, (signup) => {
+    applyRequiredEmail(signup.email);
+    applyRequiredPassword(signup.password, 6);
+    applyRequiredPassword(signup.confirmPassword, 6);
+    applyRequiredDate(signup.birthdate);
+    applyBodyMetricsValidation(signup.bodyMetrics);
+    applyPasswordConfirmation(signup);
+  });
+
+  hasError(field: FieldTree<unknown>, kind: string): boolean {
+    return field().errors().some((error) => error.kind === kind);
+  }
+
+  shouldShowError(field: FieldTree<unknown>): boolean {
+    const state = field();
+    return state.touched() && state.invalid();
+  }
 
   submit(): void {
-    if (this.signupForm.invalid) {
-      this.signupForm.markAllAsTouched();
+    if (this.signupForm().invalid()) {
+      this.signupForm.email().markAsTouched();
+      this.signupForm.password().markAsTouched();
+      this.signupForm.confirmPassword().markAsTouched();
+      this.signupForm.birthdate().markAsTouched();
+      this.signupForm.bodyMetrics().markAsTouched();
       return;
     }
 
-    const { email, password, birthdate } = this.signupForm.value;
-    console.log('Signup payload', { email, password, birthdate });
+    const { email, password, confirmPassword, birthdate, bodyMetrics } = this.signupModel();
+    console.log('Signup payload', { email, password, confirmPassword, birthdate, bodyMetrics });
   }
 }

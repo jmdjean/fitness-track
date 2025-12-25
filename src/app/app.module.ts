@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Field } from '@angular/forms/signals';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -9,6 +10,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
+import { BodyMetricsComponent } from './shared/components/body-metrics/body-metrics.component';
 import { TagSpecComponent } from './shared/components/tag-spec/tag-spec.component';
 import { FormatMinutesPipe } from './shared/pipes/format-minutes.pipe';
 import { FormatDurationPipe } from './shared/pipes/format-duration.pipe';
@@ -42,6 +44,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    Field,
+    BodyMetricsComponent,
     MaterialModule,
   ],
   providers: [],

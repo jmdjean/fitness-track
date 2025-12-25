@@ -3,9 +3,10 @@ import { SelectedExercise } from '../shared/models/selected-exercise.model';
 import { CurrentTrainingComponent } from './current-training/current-training.component';
 
 @Component({
-  selector: 'app-training',
-  templateUrl: './training.component.html',
-  styleUrls: ['./training.component.scss']
+    selector: 'app-training',
+    templateUrl: './training.component.html',
+    styleUrls: ['./training.component.scss'],
+    standalone: false
 })
 export class TrainingComponent {
   selectedIndex = 0;

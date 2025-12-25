@@ -5,9 +5,10 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
 import { StopTrainingComponent } from '../stop-training/stop-training.component';
 
 @Component({
-  selector: 'app-current-training',
-  templateUrl: './current-training.component.html',
-  styleUrls: ['./current-training.component.scss']
+    selector: 'app-current-training',
+    templateUrl: './current-training.component.html',
+    styleUrls: ['./current-training.component.scss'],
+    standalone: false
 })
 export class CurrentTrainingComponent implements OnDestroy {
   @Output() stopTraining = new EventEmitter<void>();

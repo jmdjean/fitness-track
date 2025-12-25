@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   title = 'fitness-app';

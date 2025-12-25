@@ -1,7 +1,7 @@
-<section class="login-screen">
+﻿<section class="login-screen">
   <div class="top-cta">
-      <span>Já possui cadastro?</span>
-      <a routerLink="/login" class="link">Faça o login →</a>
+      <span>JÇ­ possui cadastro?</span>
+      <a routerLink="/login" class="link">FaÇõa o login ƒÅ'</a>
     </div>
   <div class="login-shell">
 
@@ -13,7 +13,6 @@
 
     <mat-card class="login-card">
       <form
-        [formGroup]="signupForm"
         (ngSubmit)="submit()"
         class="login-form"
         autocomplete="off"
@@ -24,32 +23,14 @@
             <input
               matInput
               type="email"
-              formControlName="email"
+              [field]="signupForm.email"
               autocomplete="off"
             />
-            <mat-error *ngIf="signupForm.get('email')?.hasError('required')"
-              >E-mail obrigatório</mat-error
+            <mat-error *ngIf="shouldShowError(signupForm.email) && hasError(signupForm.email, 'required')"
+              >E-mail obrigatÇürio</mat-error
             >
-            <mat-error *ngIf="signupForm.get('email')?.hasError('email')"
-              >Digite um e-mail válido</mat-error
-            >
-          </mat-form-field>
-        </div>
-
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="full-width-input">
-            <mat-label>Senha</mat-label>
-            <input
-              matInput
-              type="password"
-              formControlName="password"
-              autocomplete="new-password"
-            />
-            <mat-error *ngIf="signupForm.get('password')?.hasError('required')"
-              >Senha obrigatória</mat-error
-            >
-            <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')"
-              >Mínimo de 6 caracteres</mat-error
+            <mat-error *ngIf="shouldShowError(signupForm.email) && hasError(signupForm.email, 'email')"
+              >Digite um e-mail vÇ­lido</mat-error
             >
           </mat-form-field>
         </div>
@@ -60,24 +41,71 @@
             <input
               matInput
               [matDatepicker]="birthPicker"
-              formControlName="birthdate"
+              [field]="signupForm.birthdate"
             />
             <mat-datepicker-toggle
               matIconSuffix
               [for]="birthPicker"
             ></mat-datepicker-toggle>
             <mat-datepicker #birthPicker></mat-datepicker>
-            <mat-error *ngIf="signupForm.get('birthdate')?.hasError('required')"
-              >Data de nascimento é obrigatória</mat-error
+            <mat-error *ngIf="shouldShowError(signupForm.birthdate) && hasError(signupForm.birthdate, 'required')"
+              >Data de nascimento Ç¸ obrigatÇüria</mat-error
             >
           </mat-form-field>
         </div>
 
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width-input">
+            <mat-label>Senha</mat-label>
+            <input
+              matInput
+              type="password"
+              [field]="signupForm.password"
+              autocomplete="new-password"
+            />
+            <mat-error *ngIf="shouldShowError(signupForm.password) && hasError(signupForm.password, 'required')"
+              >Senha obrigatÇüria</mat-error
+            >
+            <mat-error *ngIf="shouldShowError(signupForm.password) && hasError(signupForm.password, 'minLength')"
+              >MÇðnimo de 6 caracteres</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width-input">
+            <mat-label>Confirmar senha</mat-label>
+            <input
+              matInput
+              type="password"
+              [field]="signupForm.confirmPassword"
+              autocomplete="new-password"
+            />
+            <mat-error *ngIf="shouldShowError(signupForm.confirmPassword) && hasError(signupForm.confirmPassword, 'required')"
+              >Confirmacao obrigatoria</mat-error
+            >
+            <mat-error *ngIf="shouldShowError(signupForm.confirmPassword) && hasError(signupForm.confirmPassword, 'minLength')"
+              >Minimo de 6 caracteres</mat-error
+            >
+            <mat-error *ngIf="shouldShowError(signupForm.confirmPassword) && hasError(signupForm.confirmPassword, 'passwordMismatch')"
+              >Senhas nao conferem</mat-error
+            >
+          </mat-form-field>
+        </div>
+
+        <div class="form-row span-2">
+          <app-body-metrics
+            [field]="signupForm.bodyMetrics"
+            [errors]="signupForm.bodyMetrics().errors()"
+            [touched]="signupForm.bodyMetrics().touched()"
+          ></app-body-metrics>
+        </div>
+
         <button
           mat-flat-button
-          class="signin-btn"
+          class="signin-btn span-2"
           type="submit"
-          [disabled]="signupForm.invalid"
+          [disabled]="signupForm().invalid()"
         >
           Criar conta
         </button>
