@@ -1,7 +1,7 @@
 ﻿<section class="login-screen">
   <div class="top-cta">
-      <span>JÇ­ possui cadastro?</span>
-      <a routerLink="/login" class="link">FaÇõa o login ƒÅ'</a>
+      <span>Já possui cadastro?</span>
+      <a routerLink="/login" class="link">Faça o login aqui</a>
     </div>
   <div class="login-shell">
 
@@ -27,10 +27,10 @@
               autocomplete="off"
             />
             <mat-error *ngIf="shouldShowError(signupForm.email) && hasError(signupForm.email, 'required')"
-              >E-mail obrigatÇürio</mat-error
+              >E-mail obrigatório</mat-error
             >
             <mat-error *ngIf="shouldShowError(signupForm.email) && hasError(signupForm.email, 'email')"
-              >Digite um e-mail vÇ­lido</mat-error
+              >Digite um e-mail válido</mat-error
             >
           </mat-form-field>
         </div>
@@ -49,7 +49,7 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #birthPicker></mat-datepicker>
             <mat-error *ngIf="shouldShowError(signupForm.birthdate) && hasError(signupForm.birthdate, 'required')"
-              >Data de nascimento Ç¸ obrigatÇüria</mat-error
+              >Data de nascimento é obrigatória</mat-error
             >
           </mat-form-field>
         </div>
@@ -64,10 +64,10 @@
               autocomplete="new-password"
             />
             <mat-error *ngIf="shouldShowError(signupForm.password) && hasError(signupForm.password, 'required')"
-              >Senha obrigatÇüria</mat-error
+              >Senha obrigatóia</mat-error
             >
             <mat-error *ngIf="shouldShowError(signupForm.password) && hasError(signupForm.password, 'minLength')"
-              >MÇðnimo de 6 caracteres</mat-error
+              >Mínimo de 6 caracteres</mat-error
             >
           </mat-form-field>
         </div>
@@ -82,13 +82,13 @@
               autocomplete="new-password"
             />
             <mat-error *ngIf="shouldShowError(signupForm.confirmPassword) && hasError(signupForm.confirmPassword, 'required')"
-              >Confirmacao obrigatoria</mat-error
+              >Confirmação obrigatória</mat-error
             >
             <mat-error *ngIf="shouldShowError(signupForm.confirmPassword) && hasError(signupForm.confirmPassword, 'minLength')"
-              >Minimo de 6 caracteres</mat-error
+              >Mínimo de 6 caracteres</mat-error
             >
             <mat-error *ngIf="shouldShowError(signupForm.confirmPassword) && hasError(signupForm.confirmPassword, 'passwordMismatch')"
-              >Senhas nao conferem</mat-error
+              >Senhas não conferem</mat-error
             >
           </mat-form-field>
         </div>
