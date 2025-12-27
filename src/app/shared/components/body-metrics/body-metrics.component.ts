@@ -1,9 +1,15 @@
-import { Component, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormBuilder,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { type ValidationError } from '@angular/forms/signals';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { type ValidationError } from '@angular/forms/signals';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BodyMetrics } from '../../signal-forms/validators';
@@ -13,7 +19,12 @@ import { BodyMetrics } from '../../signal-forms/validators';
   templateUrl: './body-metrics.component.html',
   styleUrls: ['./body-metrics.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -36,16 +47,7 @@ export class BodyMetricsComponent implements ControlValueAccessor, OnDestroy {
   private onTouched: () => void = () => {};
 
   constructor(private readonly formBuilder: FormBuilder) {
-    this.metricsForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
-        const weight = value.weightKg === '' || value.weightKg === null ? null : Number(value.weightKg);
-        const height = value.heightCm === '' || value.heightCm === null ? null : Number(value.heightCm);
-        this.onChange({
-          weightKg: Number.isNaN(weight) ? null : weight,
-          heightCm: Number.isNaN(height) ? null : height,
-        });
-      });
+    this.setForm();
   }
 
   writeValue(value: BodyMetrics | null): void {
@@ -54,7 +56,7 @@ export class BodyMetricsComponent implements ControlValueAccessor, OnDestroy {
         weightKg: value?.weightKg ?? null,
         heightCm: value?.heightCm ?? null,
       },
-      { emitEvent: false },
+      { emitEvent: false }
     );
   }
 
@@ -90,5 +92,24 @@ export class BodyMetricsComponent implements ControlValueAccessor, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private setForm(): void {
+    this.metricsForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        const weight =
+          value.weightKg === '' || value.weightKg === null
+            ? null
+            : Number(value.weightKg);
+        const height =
+          value.heightCm === '' || value.heightCm === null
+            ? null
+            : Number(value.heightCm);
+        this.onChange({
+          weightKg: Number.isNaN(weight) ? null : weight,
+          heightCm: Number.isNaN(height) ? null : height,
+        });
+      });
   }
 }

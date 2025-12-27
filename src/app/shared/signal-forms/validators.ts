@@ -45,7 +45,7 @@ export const applyBodyMetricsValidation = (
     minWeight = 30,
     maxWeight = 300,
     minHeight = 100,
-    maxHeight = 230,
+    maxHeight = 400,
   } = options;
 
   validate(path, ({ value }) => {

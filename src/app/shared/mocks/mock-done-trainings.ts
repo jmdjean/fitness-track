@@ -4,19 +4,19 @@ import { TrainingGetAll } from '../models/training-get-all.model';
 import { TypeOfExercises } from '../models/type-of-exercises.model';
 
 const EXERCISES: TypeOfExercises[] = [
-  { id: 'ex-001', name: ExerciseName.Burpee, caloriesPerUnit: 12 },
-  { id: 'ex-002', name: ExerciseName.Flexao, caloriesPerUnit: 8 },
-  { id: 'ex-003', name: ExerciseName.Abdominal, caloriesPerUnit: 6 },
-  { id: 'ex-004', name: ExerciseName.Agachamento, caloriesPerUnit: 7 },
-  { id: 'ex-005', name: ExerciseName.Polichinelo, caloriesPerUnit: 9 },
-  { id: 'ex-006', name: ExerciseName.Prancha, caloriesPerUnit: 5 },
-  { id: 'ex-007', name: ExerciseName.Triceps, caloriesPerUnit: 7 },
-  { id: 'ex-008', name: ExerciseName.Escalada, caloriesPerUnit: 11 },
-  { id: 'ex-009', name: ExerciseName.PularCorda, caloriesPerUnit: 13 },
-  { id: 'ex-010', name: ExerciseName.Afundo, caloriesPerUnit: 7 },
-  { id: 'ex-011', name: ExerciseName.Remada, caloriesPerUnit: 9 },
-  { id: 'ex-012', name: ExerciseName.JumpSquat, caloriesPerUnit: 10 },
-  { id: 'ex-013', name: ExerciseName.MountainClimber, caloriesPerUnit: 12 },
+  { id: 'ex-001', name: ExerciseName.SUPINO_RETO, caloriesPerUnit: 12 },
+  { id: 'ex-002', name: ExerciseName.SUPINO_INCLINADO, caloriesPerUnit: 8 },
+  { id: 'ex-003', name: ExerciseName.SUPINO_DECLINADO, caloriesPerUnit: 6 },
+  { id: 'ex-004', name: ExerciseName.CRUCIFIXO, caloriesPerUnit: 7 },
+  { id: 'ex-005', name: ExerciseName.CROSSOVER, caloriesPerUnit: 9 },
+  { id: 'ex-006', name: ExerciseName.PUXADA_FRENTE, caloriesPerUnit: 5 },
+  { id: 'ex-007', name: ExerciseName.PUXADA_ABERTA, caloriesPerUnit: 7 },
+  { id: 'ex-008', name: ExerciseName.REMADA_CURVADA, caloriesPerUnit: 11 },
+  { id: 'ex-009', name: ExerciseName.REMADA_BAIXA, caloriesPerUnit: 13 },
+  { id: 'ex-010', name: ExerciseName.REMADA_UNILATERAL, caloriesPerUnit: 7 },
+  { id: 'ex-011', name: ExerciseName.BARRA_FIXA, caloriesPerUnit: 9 },
+  { id: 'ex-012', name: ExerciseName.DESENVOLVIMENTO, caloriesPerUnit: 10 },
+  { id: 'ex-013', name: ExerciseName.ELEVACAO_LATERAL, caloriesPerUnit: 12 },
 ];
 
 export const MOCK_DONE_TRAININGS: TrainingGetAll[] = [

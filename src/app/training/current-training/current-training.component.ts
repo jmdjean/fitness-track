@@ -1,93 +1,82 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import { StopTrainingComponent } from '../stop-training/stop-training.component';
+import { delay } from 'rxjs/operators';
+import { IWorkout } from '../../shared/models/workout-exercises.model';
+import { LoadingService } from '../../shared/services/loading.service';
+import { WorkoutService } from '../workout.service';
 
 @Component({
-    selector: 'app-current-training',
-    templateUrl: './current-training.component.html',
-    styleUrls: ['./current-training.component.scss'],
-    standalone: false
+  selector: 'app-current-training',
+  templateUrl: './current-training.component.html',
+  styleUrls: ['./current-training.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state(
+        'collapsed',
+        style({ height: '0px', minHeight: '0', visibility: 'hidden' })
+      ),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+    ]),
+  ],
+  standalone: false,
 })
-export class CurrentTrainingComponent implements OnDestroy {
+export class CurrentTrainingComponent implements OnInit, OnDestroy {
   @Output() stopTraining = new EventEmitter<void>();
   remainingSeconds = 0;
   totalSeconds = 0;
   private timerId: number | null = null;
+  workouts: IWorkout[] = [];
+  expandedElement: IWorkout | null = null;
+  displayedColumns: Array<'expand' | 'name' | 'quantity'> = [
+    'expand',
+    'name',
+    'quantity',
+  ];
 
-  constructor(private dialog: MatDialog, private router: Router) {}
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+    private workoutService: WorkoutService,
+    private loadingService: LoadingService
+  ) {}
 
-  ngOnDestroy() {
-    this.clearTimer();
+  ngOnInit(): void {
+    this.loadWorkouts();
   }
 
-  startTraining(totalSeconds: number) {
-    this.totalSeconds = totalSeconds;
-    this.remainingSeconds = totalSeconds;
-    this.startOrResumeTimer();
+  ngOnDestroy() {}
+
+  toggleRow(workout: IWorkout): void {
+    this.expandedElement = this.expandedElement === workout ? null : workout;
   }
 
-  onStop() {
-    this.clearTimer();
-
-    const dialogRef = this.dialog.open(StopTrainingComponent, {
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((shouldStop: boolean) => {
-      if (shouldStop) {
-        this.remainingSeconds = 0;
-        this.totalSeconds = 0;
-        this.stopTraining.emit();
-        return;
-      }
-
-      this.startOrResumeTimer();
-    });
+  totalExercises(workout: IWorkout): number {
+    return workout.exercises.length;
   }
 
-  private startOrResumeTimer() {
-    if (this.timerId !== null) {
-      return;
-    }
-
-    this.timerId = window.setInterval(() => {
-      this.remainingSeconds = Math.max(this.remainingSeconds - 1, 0);
-
-      if (this.remainingSeconds === 0) {
-        this.clearTimer();
-        this.openFinishedDialog();
-      }
-    }, 1000);
-  }
-
-  private clearTimer() {
-    if (this.timerId !== null) {
-      window.clearInterval(this.timerId);
-      this.timerId = null;
-    }
-  }
-
-  formatTime(totalSeconds: number): string {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  }
-
-  private openFinishedDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      disableClose: true,
-      width: '360px',
-      data: {
-        title: 'Treino finalizado',
-        message: 'Mais um treino concluido',
-        actionButtonText: 'Finalizar',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate(['/finished-traning']);
-    });
+  private loadWorkouts(): void {
+    this.loadingService
+      .track(this.workoutService.getAll().pipe(delay(1000)))
+      .subscribe((data) => {
+        this.workouts = data;
+      });
   }
 }

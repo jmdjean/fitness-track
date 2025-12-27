@@ -1,10 +1,16 @@
+<app-loading-spinner></app-loading-spinner>
+
 <ng-container *ngIf="!isAuthPage; else authLayout">
   <mat-sidenav-container>
     <mat-sidenav #sidenav mode="over" role="navigation">
       <nav class="side-nav-links">
-        <button mat-button routerLink="/training" (click)="sidenav.close()">
+        <button mat-button routerLink="/new-training" (click)="sidenav.close()">
           <mat-icon>fitness_center</mat-icon>
-          Fazer um treino
+          Montar um treino
+        </button>
+        <button mat-button routerLink="/current-training" (click)="sidenav.close()">
+          <mat-icon>list_alt</mat-icon>
+          Treinos atuais
         </button>
         <button mat-button routerLink="/finished-traning" (click)="sidenav.close()">
           <mat-icon>list</mat-icon>

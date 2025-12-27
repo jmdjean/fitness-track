@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { form, type FieldTree } from '@angular/forms/signals';
+import { Router } from '@angular/router';
 import {
   applyBodyMetricsValidation,
   applyPasswordConfirmation,
@@ -8,6 +9,8 @@ import {
   applyRequiredPassword,
   type BodyMetrics,
 } from '../../shared/signal-forms/validators';
+import { LoadingService } from '../../shared/services/loading.service';
+import { AuthService } from '../auth.service';
 
 @Component({
     selector: 'app-signup',
@@ -16,25 +19,14 @@ import {
     standalone: false
 })
 export class SignupComponent {
-  readonly signupModel = signal({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    birthdate: null as Date | null,
-    bodyMetrics: {
-      weightKg: null,
-      heightCm: null,
-    } as BodyMetrics,
-  });
+  readonly signupModel = this.createSignupModel();
+  readonly signupForm = this.createSignupForm();
 
-  readonly signupForm = form(this.signupModel, (signup) => {
-    applyRequiredEmail(signup.email);
-    applyRequiredPassword(signup.password, 6);
-    applyRequiredPassword(signup.confirmPassword, 6);
-    applyRequiredDate(signup.birthdate);
-    applyBodyMetricsValidation(signup.bodyMetrics);
-    applyPasswordConfirmation(signup);
-  });
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private loadingService: LoadingService
+  ) {}
 
   hasError(field: FieldTree<unknown>, kind: string): boolean {
     return field().errors().some((error) => error.kind === kind);
@@ -47,15 +39,60 @@ export class SignupComponent {
 
   submit(): void {
     if (this.signupForm().invalid()) {
-      this.signupForm.email().markAsTouched();
-      this.signupForm.password().markAsTouched();
-      this.signupForm.confirmPassword().markAsTouched();
-      this.signupForm.birthdate().markAsTouched();
-      this.signupForm.bodyMetrics().markAsTouched();
+      this.markInvalidFields();
       return;
     }
 
-    const { email, password, confirmPassword, birthdate, bodyMetrics } = this.signupModel();
-    console.log('Signup payload', { email, password, confirmPassword, birthdate, bodyMetrics });
+    this.registerUser();
+  }
+
+  private createSignupModel() {
+    return signal({
+      email: '',
+      password: '',
+      confirmPassword: '',
+      birthdate: null as Date | null,
+      bodyMetrics: {
+        weightKg: null,
+        heightCm: null,
+      } as BodyMetrics,
+    });
+  }
+
+  private createSignupForm() {
+    return form(this.signupModel, (signup) => {
+      applyRequiredEmail(signup.email);
+      applyRequiredPassword(signup.password, 6);
+      applyRequiredPassword(signup.confirmPassword, 6);
+      applyRequiredDate(signup.birthdate);
+      applyBodyMetricsValidation(signup.bodyMetrics);
+      applyPasswordConfirmation(signup);
+    });
+  }
+
+  private markInvalidFields(): void {
+    this.signupForm.email().markAsTouched();
+    this.signupForm.password().markAsTouched();
+    this.signupForm.confirmPassword().markAsTouched();
+    this.signupForm.birthdate().markAsTouched();
+    this.signupForm.bodyMetrics().markAsTouched();
+  }
+
+  private registerUser(): void {
+    const { email, password, confirmPassword, birthdate, bodyMetrics } =
+      this.signupModel();
+    this.loadingService
+      .track(
+        this.authService.register({
+          email,
+          password,
+          confirmPassword,
+          birthdate,
+          bodyMetrics,
+        })
+      )
+      .subscribe(() => {
+        this.router.navigate(['/login']);
+      });
   }
 }
