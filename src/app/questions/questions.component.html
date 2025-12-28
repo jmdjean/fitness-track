@@ -23,6 +23,8 @@
         >
           Enviar
         </button>
+        <h2>Resposta:</h2>
+        <p *ngIf="responseMessage" class="response-message">{{ responseMessage }}</p>
       </form>
     </mat-card-content>
   </mat-card>

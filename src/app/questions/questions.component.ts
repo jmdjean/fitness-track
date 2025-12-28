@@ -13,6 +13,7 @@ import { QuestionService } from './question.service';
 export class QuestionsComponent {
   readonly questionModel = this.createQuestionModel();
   readonly questionForm = this.createQuestionForm();
+  responseMessage = '';
 
   constructor(
     private questionService: QuestionService,
@@ -39,10 +40,12 @@ export class QuestionsComponent {
     this.loadingService
       .track(this.questionService.create({ question }))
       .subscribe({
-        next: () => {
+        next: (response) => {
+          this.responseMessage = this.formatResponse(response);
           this.questionModel.set({ question: '' });
         },
         error: (error) => {
+          this.responseMessage = '';
           this.notificationHelper.showError(
             error?.error ?? 'Erro ao enviar pergunta.'
           );
@@ -60,6 +63,21 @@ export class QuestionsComponent {
     return form(this.questionModel, (question) => {
       required(question.question);
     });
+  }
+
+  private formatResponse(response: unknown): string {
+    if (typeof response === 'string') {
+      return response;
+    }
+
+    if (response && typeof response === 'object' && 'message' in response) {
+      const message = (response as { message?: unknown }).message;
+      if (typeof message === 'string') {
+        return message;
+      }
+    }
+
+    return 'Pergunta enviada com sucesso.';
   }
 }
 
