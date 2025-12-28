@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { API_URLS } from '../shared/urls';
 
 export type QuestionPayload = {
   question: string;
@@ -18,6 +19,16 @@ export class QuestionService {
       return of({ ok: true });
     }
 
-    return this.http.post<unknown>(`${environment.apiBaseUrl}/questions`, payload);
+    if (!environment.apiBaseUrl) {
+      return throwError(() => ({
+        error: 'apiBaseUrl não configurado.',
+      }));
+    }
+
+    return this.http.post<unknown>(
+      `${environment.apiBaseUrl}${API_URLS.question}`,
+      payload
+    );
   }
 }
+

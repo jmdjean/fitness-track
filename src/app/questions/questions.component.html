@@ -1,17 +1,20 @@
 <section class="question-page">
   <mat-card class="question-card">
-    <mat-card-title>Consulte o banco de dados!</mat-card-title>
+    <mat-card-title>Consulte os dados</mat-card-title>
     <mat-card-content>
-      <form (ngSubmit)="submit()" class="question-form" autocomplete="off">
+      <form class="question-form" autocomplete="off" (ngSubmit)="onSendClick()">
         <mat-form-field appearance="fill" class="question-field">
-          <mat-label>Faça sua pergunta</mat-label>
+          <mat-label>Faça a sua pergunta</mat-label>
           <textarea
             matInput
             rows="6"
-            [field]="questionForm.question"
+            [(ngModel)]="question"
+            name="question"
+            #questionModel="ngModel"
+            required
             autocomplete="off"
           ></textarea>
-          <mat-error *ngIf="shouldShowError(questionForm.question) && hasError(questionForm.question, 'required')"
+          <mat-error *ngIf="questionModel.invalid && (questionModel.dirty || questionModel.touched)"
             >Pergunta obrigatória</mat-error
           >
         </mat-form-field>
@@ -19,7 +22,7 @@
           mat-flat-button
           color="primary"
           type="submit"
-          [disabled]="questionForm().invalid()"
+          [disabled]="questionModel.invalid"
         >
           Enviar
         </button>

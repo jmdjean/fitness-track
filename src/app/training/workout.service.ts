@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { API_URLS } from '../shared/urls';
 import { MOCK_WORKOUTS } from '../shared/mocks/mock-workouts';
 import { IWorkout } from '../shared/models/workout-exercises.model';
 
@@ -16,7 +17,7 @@ export class WorkoutService {
       return of(MOCK_WORKOUTS);
     }
 
-    return this.http.get<IWorkout[]>(`${environment.apiBaseUrl}/workouts`);
+    return this.http.get<IWorkout[]>(`${environment.apiBaseUrl}${API_URLS.workouts}`);
   }
 
   create(payload: WorkoutCreatePayload): Observable<unknown> {
@@ -24,7 +25,7 @@ export class WorkoutService {
       return of({ ok: true });
     }
 
-    return this.http.post<unknown>(`${environment.apiBaseUrl}/workouts`, payload);
+    return this.http.post<unknown>(`${environment.apiBaseUrl}${API_URLS.workouts}`, payload);
   }
 
   delete(id: string): Observable<unknown> {
@@ -32,7 +33,7 @@ export class WorkoutService {
       return of({ ok: true });
     }
 
-    return this.http.delete<unknown>(`${environment.apiBaseUrl}/workouts/${id}`);
+    return this.http.delete<unknown>(`${environment.apiBaseUrl}${API_URLS.workoutById(id)}`);
   }
 }
 
@@ -44,3 +45,4 @@ export type WorkoutCreatePayload = {
     reps: number;
   }>;
 };
+

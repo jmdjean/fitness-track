@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { API_URLS } from '../shared/urls';
 import { type BodyMetrics } from '../shared/signal-forms/validators';
 import { type AuthResponse, type AuthSession, type AuthUser } from './auth.types';
 
@@ -37,7 +38,7 @@ export class AuthService {
     }
 
     return this.http.post<unknown>(
-      `${environment.apiBaseUrl}/auth/register`,
+      `${environment.apiBaseUrl}${API_URLS.authRegister}`,
       payload
     );
   }
@@ -53,7 +54,7 @@ export class AuthService {
     }
 
     return this.http
-      .post<AuthResponse>(`${environment.apiBaseUrl}/auth/login`, payload)
+      .post<AuthResponse>(`${environment.apiBaseUrl}${API_URLS.authLogin}`, payload)
       .pipe(
         tap((response) => {
           const session = this.buildSession(response, payload.email);
@@ -103,3 +104,4 @@ export class AuthService {
     }
   }
 }
+

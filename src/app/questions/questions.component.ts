@@ -1,5 +1,4 @@
-import { Component, signal, type WritableSignal } from '@angular/core';
-import { form, required, type FieldTree } from '@angular/forms/signals';
+import { Component } from '@angular/core';
 import { LoadingService } from '../shared/services/loading.service';
 import { NotificationHelperService } from '../shared/services/notification-helper.service';
 import { QuestionService } from './question.service';
@@ -11,8 +10,7 @@ import { QuestionService } from './question.service';
   standalone: false,
 })
 export class QuestionsComponent {
-  readonly questionModel = this.createQuestionModel();
-  readonly questionForm = this.createQuestionForm();
+  question = '';
   responseMessage = '';
 
   constructor(
@@ -21,48 +19,29 @@ export class QuestionsComponent {
     private notificationHelper: NotificationHelperService
   ) {}
 
-  hasError(field: FieldTree<unknown>, kind: string): boolean {
-    return field().errors().some((error) => error.kind === kind);
-  }
-
-  shouldShowError(field: FieldTree<unknown>): boolean {
-    const state = field();
-    return state.touched() && state.invalid();
-  }
-
   submit(): void {
-    if (this.questionForm().invalid()) {
-      this.questionForm.question().markAsTouched();
+    const question = this.question.trim();
+    if (!question) {
       return;
     }
 
-    const { question } = this.questionModel();
     this.loadingService
       .track(this.questionService.create({ question }))
       .subscribe({
         next: (response) => {
           this.responseMessage = this.formatResponse(response);
-          this.questionModel.set({ question: '' });
+          this.question = '';
         },
         error: (error) => {
           this.responseMessage = '';
-          this.notificationHelper.showError(
-            error?.error ?? 'Erro ao enviar pergunta.'
-          );
+          console.log(error);
+          this.notificationHelper.showError('Erro ao enviar pergunta.');
         },
       });
   }
 
-  private createQuestionModel(): WritableSignal<QuestionFormModel> {
-    return signal({
-      question: '',
-    });
-  }
-
-  private createQuestionForm(): FieldTree<QuestionFormModel> {
-    return form(this.questionModel, (question) => {
-      required(question.question);
-    });
+  onSendClick(): void {
+    this.submit();
   }
 
   private formatResponse(response: unknown): string {
@@ -80,7 +59,3 @@ export class QuestionsComponent {
     return 'Pergunta enviada com sucesso.';
   }
 }
-
-type QuestionFormModel = {
-  question: string;
-};
