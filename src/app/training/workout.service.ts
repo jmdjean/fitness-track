@@ -76,5 +76,6 @@ export type WorkoutCreatePayload = {
     sets: number;
     reps: number;
   }>;
+  quantityCalories: number;
   userId?: string;
 };

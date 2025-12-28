@@ -1,10 +1,10 @@
 import { Component, OnInit, signal, type WritableSignal } from '@angular/core';
 import { form, required, type FieldTree } from '@angular/forms/signals';
-import { LoadingService } from '../../shared/services/loading.service';
-import { ExerciseService } from '../../shared/services/exercise.service';
-import { NotificationHelperService } from '../../shared/services/notification-helper.service';
 import { IIdNome } from '../../shared/models/id-nome.model';
-import { WorkoutService } from '../workout.service';
+import { ExerciseService } from '../../shared/services/exercise.service';
+import { LoadingService } from '../../shared/services/loading.service';
+import { NotificationHelperService } from '../../shared/services/notification-helper.service';
+import { WorkoutCreatePayload, WorkoutService } from '../workout.service';
 
 @Component({
     selector: 'app-new-training',
@@ -59,13 +59,14 @@ export class NewTrainingComponent implements OnInit {
       return;
     }
 
-    const payload = {
+    const payload: WorkoutCreatePayload = {
       name: this.workoutModel().name.trim(),
       exercises: this.exercises.map((exercise) => ({
         exercise: exercise.exerciseId,
         sets: exercise.sets,
         reps: exercise.reps,
       })),
+      quantityCalories: this.exercises.length * 50
     };
 
     this.loadingService
