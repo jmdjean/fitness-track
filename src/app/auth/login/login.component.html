@@ -1,63 +1,67 @@
-<section class="login-screen">
-  <div class="login-shell">
-    <div class="logo-circle">
-      <mat-icon>fitness_center</mat-icon>
+<div class="flex h-screen w-full items-center justify-center overflow-hidden p-2">
+  <mat-card class="cardWithShadow overflow-hidden auth-card mx-auto mb-0">
+    <div class="grid grid-cols-12 gap-6">
+      <div class="lg:col-span-6 col-span-12 flex items-stretch">
+        <div class="w-full p-10 flex flex-col justify-center">
+          <div class="text-center">Seu painel Fitness Track</div>
+
+          <form class="mt-8" (ngSubmit)="execLogin()" autocomplete="off">
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block text-start"
+              >E-mail</mat-label
+            >
+            <mat-form-field appearance="outline" class="w-full" color="primary">
+              <input matInput type="email" [field]="loginForm.email" autocomplete="off" />
+              <mat-error *ngIf="shouldShowError(loginForm.email) && hasError(loginForm.email, 'required')"
+                >E-mail obrigatório</mat-error
+              >
+              <mat-error *ngIf="shouldShowError(loginForm.email) && hasError(loginForm.email, 'email')"
+                >Digite um e-mail válido</mat-error
+              >
+            </mat-form-field>
+
+            <mat-label class="mat-subtitle-2 text-sm font-semibold mb-3 block text-start"
+              >Senha</mat-label
+            >
+            <mat-form-field appearance="outline" class="w-full" color="primary">
+              <input
+                matInput
+                type="password"
+                [field]="loginForm.password"
+                autocomplete="new-password"
+              />
+              <mat-error *ngIf="shouldShowError(loginForm.password) && hasError(loginForm.password, 'required')"
+                >Senha obrigatória</mat-error
+              >
+            </mat-form-field>
+
+            <button
+              mat-flat-button
+              color="primary"
+              class="w-full"
+              type="submit"
+              [disabled]="loginForm().invalid()"
+            >
+              Entrar
+            </button>
+          </form>
+
+          <span class="block font-medium text-center mt-6"
+            >Ainda não tem conta?
+            <a routerLink="/signup" class="no-underline text-primary font-medium text-sm">
+              Crie uma conta</a
+            ></span
+          >
+        </div>
+      </div>
+      <div class="lg:col-span-6 col-span-12 relative hidden lg:flex justify-center items-stretch bg-light p-5">
+        <div class="flex items-center justify-center w-full">
+          <img
+            src="/assets/images/backgrounds/login-bg.svg"
+            alt="Ilustração de login"
+            class="img-fluid object-cover"
+          />
+        </div>
+      </div>
     </div>
-    <h1>Entrar no Fitness Track</h1>
-
-    <mat-card class="login-card">
-      <form
-        (ngSubmit)="execLogin()"
-        class="login-form"
-        autocomplete="off"
-      >
-        <mat-form-field appearance="fill" class="full-width-input">
-          <mat-label>Usuário ou e-mail</mat-label>
-          <input
-            matInput
-            type="email"
-            [field]="loginForm.email"
-            autocomplete="off"
-          />
-          <mat-error *ngIf="shouldShowError(loginForm.email) && hasError(loginForm.email, 'required')"
-            >E-mail obrigatório</mat-error
-          >
-          <mat-error *ngIf="shouldShowError(loginForm.email) && hasError(loginForm.email, 'email')"
-            >Digite um e-mail válido</mat-error
-          >
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" class="full-width-input">
-          <mat-label>Senha</mat-label>
-          <input
-            matInput
-            type="password"
-            [field]="loginForm.password"
-            autocomplete="new-password"
-          />
-          <mat-error *ngIf="shouldShowError(loginForm.password) && hasError(loginForm.password, 'required')"
-            >Senha obrigatória</mat-error
-          >
-        </mat-form-field>
-
-        <!-- <div class="form-footer">
-          <a href="#" class="link">Esqueceu a senha?</a>
-        </div> -->
-
-        <button
-          mat-flat-button
-          class="signin-btn"
-          type="submit"
-          [disabled]="loginForm().invalid()"
-        >
-          Entrar
-        </button>
-      </form>
-    </mat-card>
-
-    <mat-card class="signup-card">
-      <span>Novo por aqui?</span>
-      <a class="link" routerLink="/signup">Crie uma conta</a>
-    </mat-card>
-  </div>
-</section>
+  </mat-card>
+</div>

@@ -41,6 +41,8 @@ export class AuthContextInterceptor implements HttpInterceptor {
     const userIdentifier = this.getUserIdentifier(session);
     if (userIdentifier) {
       headers = headers.set('X-User', userIdentifier);
+    } else if (headers.has('X-User')) {
+      headers = headers.delete('X-User');
     }
 
     return headers;

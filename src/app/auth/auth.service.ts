@@ -7,6 +7,7 @@ import { type BodyMetrics } from '../shared/signal-forms/validators';
 import { type AuthResponse, type AuthSession, type AuthUser } from './auth.types';
 
 export type RegisterPayload = {
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;

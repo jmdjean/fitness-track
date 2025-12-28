@@ -1,5 +1,6 @@
 import { Component, OnInit, signal, type WritableSignal } from '@angular/core';
 import { form, required, type FieldTree } from '@angular/forms/signals';
+import { Router } from '@angular/router';
 import { IIdNome } from '../../shared/models/id-nome.model';
 import { ExerciseService } from '../../shared/services/exercise.service';
 import { LoadingService } from '../../shared/services/loading.service';
@@ -22,7 +23,8 @@ export class NewTrainingComponent implements OnInit {
     private exerciseService: ExerciseService,
     private workoutService: WorkoutService,
     private loadingService: LoadingService,
-    private notificationHelper: NotificationHelperService
+    private notificationHelper: NotificationHelperService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +76,8 @@ export class NewTrainingComponent implements OnInit {
       .subscribe({
         next: () => {
           this.resetForm();
+          this.notificationHelper.showSuccess('Treino salvo com sucesso.');
+          this.router.navigate(['/current-training']);
         },
         error: (request) => {
           this.notificationHelper.showError(

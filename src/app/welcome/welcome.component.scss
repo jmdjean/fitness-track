@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+.welcome-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 1200px;
+  background: #2a3f57;
+  border-radius: 18px;
+  color: #f8fafc;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.welcome-content {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.welcome-content h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.welcome-content p {
+  margin: 6px 0 0;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.welcome-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  object-fit: cover;
+}
+
+.welcome-illustration img {
+  width: min(380px, 40vw);
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .welcome-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .welcome-content {
+    flex-direction: column;
+  }
+
+  .welcome-illustration img {
+    width: min(420px, 70vw);
+  }
+}

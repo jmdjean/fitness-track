@@ -1,4 +1,4 @@
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
+@use "./assets/scss/style";
 
 html,
 body {
@@ -6,20 +6,21 @@ body {
   margin: 0;
 }
 
-/* Global font */
-html,
-body,
-app-root {
-  font-family: "Roboto", sans-serif;
+body {
+  background: var(--mat-sys-background);
 }
 
-input::placeholder,
-textarea::placeholder,
-.mat-mdc-input-element::placeholder {
-  font-size: 0.3em;
+.cardWithShadow {
+  box-shadow: var(--shadow-sm);
+  border-radius: 16px;
 }
 
-.mat-mdc-form-field .mdc-floating-label,
-.mat-mdc-form-field .mdc-floating-label--float-above {
-  font-size: 0.75em !important;
+.auth-card {
+  max-width: 960px;
+  width: 100%;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
 }

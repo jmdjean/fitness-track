@@ -46,7 +46,7 @@ export class QuestionsComponent {
     this.submit();
   }
 
-  private formatResponse(response: unknown): string {
+  private formatResponse(response: any): string {
     if (typeof response === 'string') {
       return response;
     }
@@ -56,6 +56,10 @@ export class QuestionsComponent {
       if (typeof message === 'string') {
         return message;
       }
+    }
+
+    if(response && response.data[0]){
+      return response.data[0];
     }
 
     return 'Pergunta enviada com sucesso.';

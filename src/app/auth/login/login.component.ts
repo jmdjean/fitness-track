@@ -53,7 +53,7 @@ export class LoginComponent {
       .track(this.authService.login({ email, password }))
       .subscribe({
         next: () => {
-          this.router.navigate(['/finished-traning']);
+          this.router.navigate(['/']);
         },
         error: (request) => {
           this.notificationHelper.showError(

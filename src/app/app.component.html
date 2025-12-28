@@ -1,39 +1,66 @@
 <app-loading-spinner></app-loading-spinner>
 
 <ng-container *ngIf="!isAuthPage; else authLayout">
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="over" role="navigation">
+  <mat-sidenav-container class="app-shell">
+    <mat-sidenav #sidenav mode="side" role="navigation" class="app-sidenav" opened>
+      <div class="sidenav-header">
+        <span class="sidenav-title">Fitness Track</span>
+      </div>
       <nav class="side-nav-links">
-        <button mat-button routerLink="/new-training" (click)="sidenav.close()">
+        <button mat-button routerLink="/new-training">
           <mat-icon>fitness_center</mat-icon>
           Montar um treino
         </button>
-        <button mat-button routerLink="/current-training" (click)="sidenav.close()">
+        <button mat-button routerLink="/current-training">
           <mat-icon>list_alt</mat-icon>
           Treinos atuais
         </button>
-        <button mat-button routerLink="/finished-traning" (click)="sidenav.close()">
+        <button mat-button routerLink="/finished-traning">
           <mat-icon>list</mat-icon>
           Treinos feitos
         </button>
-        <button mat-button routerLink="/questions" (click)="sidenav.close()">
+        <button mat-button routerLink="/questions">
           <mat-icon>help_outline</mat-icon>
-          Consulte o banco de dados!
+          Consulte
         </button>
       </nav>
     </mat-sidenav>
     <mat-sidenav-content>
-      <mat-toolbar color="primary" class="app-toolbar">
-        <button mat-icon-button aria-label="Abrir menu" (click)="onToggle()">
+      <mat-toolbar class="app-toolbar">
+        <button
+          mat-icon-button
+          aria-label="Abrir menu"
+          class="mobile-only"
+          (click)="onToggle()"
+        >
           <mat-icon>menu</mat-icon>
         </button>
-        <span class="brand">Fitness Track</span>
         <span class="spacer"></span>
-        <button mat-icon-button aria-label="Sair" (click)="onLogout()">
-          <mat-icon>logout</mat-icon>
+
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="profileMenu"
+          aria-label="Perfil"
+          class="profile-button"
+        >
+          <img
+            class="profile-avatar"
+            src="/assets/images/profile/user-1.jpg"
+            alt="Perfil"
+          />
         </button>
+        <mat-menu #profileMenu="matMenu" class="profile-menu">
+          <button mat-menu-item>
+            <mat-icon>person</mat-icon>
+            Meu perfil
+          </button>
+          <button mat-menu-item (click)="onLogout()">
+            <mat-icon>logout</mat-icon>
+            Sair
+          </button>
+        </mat-menu>
       </mat-toolbar>
-      <main>
+      <main class="app-content">
         <router-outlet></router-outlet>
       </main>
     </mat-sidenav-content>

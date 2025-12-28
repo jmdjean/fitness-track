@@ -1,5 +1,5 @@
 import { Component, signal, type WritableSignal } from '@angular/core';
-import { form, type FieldTree } from '@angular/forms/signals';
+import { form, required, type FieldTree } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../shared/services/loading.service';
 import { NotificationHelperService } from '../../shared/services/notification-helper.service';
@@ -50,6 +50,7 @@ export class SignupComponent {
 
   private createSignupModel(): WritableSignal<SignupModel> {
     return signal({
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -63,6 +64,7 @@ export class SignupComponent {
 
   private createSignupForm(): FieldTree<SignupModel> {
     return form(this.signupModel, (signup) => {
+      required(signup.name);
       applyRequiredEmail(signup.email);
       applyRequiredPassword(signup.password, 6);
       applyRequiredPassword(signup.confirmPassword, 6);
@@ -73,6 +75,7 @@ export class SignupComponent {
   }
 
   private markInvalidFields(): void {
+    this.signupForm.name().markAsTouched();
     this.signupForm.email().markAsTouched();
     this.signupForm.password().markAsTouched();
     this.signupForm.confirmPassword().markAsTouched();
@@ -81,11 +84,12 @@ export class SignupComponent {
   }
 
   private registerUser(): void {
-    const { email, password, confirmPassword, birthdate, bodyMetrics } =
+    const { name, email, password, confirmPassword, birthdate, bodyMetrics } =
       this.signupModel();
     this.loadingService
       .track(
         this.authService.register({
+          name,
           email,
           password,
           confirmPassword,
@@ -107,9 +111,30 @@ export class SignupComponent {
         },
       });
   }
+
+  onBirthdateInput(event: Event): void {
+    const input = event.target as HTMLInputElement | null;
+    if (!input) {
+      return;
+    }
+
+    const masked = this.formatBirthdateInput(input.value);
+    if (masked !== input.value) {
+      input.value = masked;
+    }
+  }
+
+  private formatBirthdateInput(value: string): string {
+    const digits = value.replace(/\D/g, '').slice(0, 8);
+    const day = digits.slice(0, 2);
+    const month = digits.slice(2, 4);
+    const year = digits.slice(4, 8);
+    return [day, month, year].filter(Boolean).join('/');
+  }
 }
 
 type SignupModel = {
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;

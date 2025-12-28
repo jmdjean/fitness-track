@@ -1,1 +1,21 @@
-<p>Bem-vindo!</p>
+<section class="welcome-wrapper">
+  <div class="welcome-card">
+    <div class="welcome-content">
+      <img
+        class="welcome-avatar"
+        src="/assets/images/profile/user-1.jpg"
+        alt="Avatar do usuário"
+      />
+      <div>
+        <h2>Bem-vindo de volta, {{ userName$ | async }} 👋</h2>
+        <p>Confira seus treinos e métricas do dia.</p>
+      </div>
+    </div>
+    <div class="welcome-illustration">
+      <img
+        src="/assets/images/backgrounds/welcome-bg2.png"
+        alt="Ilustração de boas-vindas"
+      />
+    </div>
+  </div>
+</section>

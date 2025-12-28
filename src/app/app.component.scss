@@ -1,5 +1,51 @@
-mat-sidenav-container {
+.app-shell {
   height: 100vh;
+  background: var(--mat-sys-background);
+}
+
+.app-sidenav {
+  width: 260px;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-background);
+  border-right: 1px solid var(--mat-sys-outline-variant);
+}
+
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+}
+
+.sidenav-logo {
+  width: 38px;
+  height: 38px;
+}
+
+.sidenav-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.side-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 12px 16px;
+}
+
+.side-nav-links button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+  color: inherit;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+.side-nav-links button:hover {
+  background: rgba(148, 163, 184, 0.15);
 }
 
 .app-toolbar {
@@ -7,27 +53,46 @@ mat-sidenav-container {
   top: 0;
   z-index: 2;
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-background);
+  padding: 0 20px;
 }
 
-.brand {
-  font-weight: 600;
-  letter-spacing: 0.5px;
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.profile-button {
+  padding: 0;
+}
+
+.profile-button .profile-avatar {
+  margin: 0;
 }
 
 .spacer {
   flex: 1 1 auto;
 }
 
-.side-nav-links {
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
+.app-content {
+  padding: 20px;
 }
 
-.side-nav-links button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: flex-start;
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .app-sidenav {
+    width: 240px;
+  }
+
+  .mobile-only {
+    display: inline-flex;
+  }
 }

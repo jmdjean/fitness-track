@@ -30,6 +30,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/globals.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -111,6 +112,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/globals.css",
               "src/styles.scss"
             ],
             "scripts": []

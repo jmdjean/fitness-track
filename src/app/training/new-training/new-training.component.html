@@ -1,57 +1,64 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Montar treino</mat-card-title>
-    <mat-card-subtitle>Cadastre um novo treino</mat-card-subtitle>
-  </mat-card-header>
+<section class="training-form">
+  <mat-card class="training-card">
+    <div class="card-header">
+      <h2>Montar treino</h2>
+      <p>Cadastre um novo treino</p>
+    </div>
 
-  <mat-card-content>
-    <div class="content-grid">
-      <mat-form-field appearance="fill" class="name-field">
-        <mat-label>Nome do treino</mat-label>
-        <input
-          matInput
-          type="text"
-          [field]="workoutForm.name"
-        />
-      </mat-form-field>
+    <div class="form-grid">
+      <div class="form-block">
+        <label class="field-label">Nome do treino</label>
+        <mat-form-field appearance="outline" class="full-field" color="primary">
+          <input matInput type="text" [field]="workoutForm.name" placeholder="Ex.: Treino A" />
+        </mat-form-field>
+      </div>
 
-      <div class="selected-section">
-        <div class="selected-header">Exercícios</div>
-        <div class="selected-list">
+      <div class="form-block">
+        <div class="section-title">Exercícios</div>
+        <div class="exercise-list">
           <div class="exercise-row" *ngFor="let exercise of exercises; let i = index">
-            <mat-form-field appearance="fill" class="exercise-field">
-              <mat-label>Exercício</mat-label>
-              <mat-select
-                [value]="exercise.exerciseId"
-                (selectionChange)="onExerciseChange(i, $event.value)"
-              >
-                <mat-option *ngFor="let item of availableExercises" [value]="item.id">
-                  {{ item.nome }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="sets-field">
-              <mat-label>Séries</mat-label>
-              <input
-                matInput
-                type="number"
-                min="1"
-                max="50"
-                [value]="exercise.sets"
-                (input)="onSetsChange(i, $any($event.target).value)"
-              />
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="reps-field">
-              <mat-label>Repetições</mat-label>
-              <input
-                matInput
-                type="number"
-                min="1"
-                max="100"
-                [value]="exercise.reps"
-                (input)="onRepsChange(i, $any($event.target).value)"
-              />
-            </mat-form-field>
+            <div class="field-group">
+              <label class="field-label">Exercício</label>
+              <mat-form-field appearance="outline" class="full-field" color="primary">
+                <mat-select
+                  [value]="exercise.exerciseId"
+                  (selectionChange)="onExerciseChange(i, $event.value)"
+                >
+                  <mat-option *ngFor="let item of availableExercises" [value]="item.id">
+                    {{ item.nome }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Séries</label>
+              <mat-form-field appearance="outline" class="full-field" color="primary">
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  max="50"
+                  [value]="exercise.sets"
+                  (input)="onSetsChange(i, $any($event.target).value)"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label">Repetições</label>
+              <mat-form-field appearance="outline" class="full-field" color="primary">
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  max="100"
+                  [value]="exercise.reps"
+                  (input)="onRepsChange(i, $any($event.target).value)"
+                />
+              </mat-form-field>
+            </div>
+
             <div class="row-actions">
               <button
                 mat-icon-button
@@ -73,16 +80,16 @@
         </div>
       </div>
     </div>
-  </mat-card-content>
 
-  <mat-card-actions align="end">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="saveWorkout()"
-      [disabled]="workoutForm().invalid() || !exercises.length"
-    >
-      Salvar novo treino
-    </button>
-  </mat-card-actions>
-</mat-card>
+    <mat-card-actions align="end">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="saveWorkout()"
+        [disabled]="workoutForm().invalid() || !exercises.length"
+      >
+        Salvar novo treino
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</section>
