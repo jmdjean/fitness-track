@@ -1,6 +1,8 @@
 import { Component, signal, type WritableSignal } from '@angular/core';
 import { form, type FieldTree } from '@angular/forms/signals';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../shared/services/loading.service';
+import { NotificationHelperService } from '../../shared/services/notification-helper.service';
 import {
   applyBodyMetricsValidation,
   applyPasswordConfirmation,
@@ -9,8 +11,6 @@ import {
   applyRequiredPassword,
   type BodyMetrics,
 } from '../../shared/signal-forms/validators';
-import { LoadingService } from '../../shared/services/loading.service';
-import { NotificationHelperService } from '../../shared/services/notification-helper.service';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -95,11 +95,14 @@ export class SignupComponent {
       )
       .subscribe({
         next: () => {
+          this.notificationHelper.showSuccess(
+            'Usuário cadastrado com sucesso.'
+          );
           this.router.navigate(['/login']);
         },
-        error: (error) => {
+        error: (request) => {
           this.notificationHelper.showError(
-            error?.error ?? 'Erro ao cadastrar usuário.'
+            request?.error?.error ?? 'Erro ao cadastrar usuário.'
           );
         },
       });

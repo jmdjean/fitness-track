@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { API_URLS } from '../shared/urls';
+import { API_URLS } from '../shared/config/urls';
 import { MOCK_DONE_TRAININGS } from '../shared/mocks/mock-done-trainings';
 import { TrainingGetAll } from '../shared/models/training-get-all.model';
 

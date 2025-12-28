@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { API_URLS } from '../shared/urls';
+import { AuthService } from '../auth/auth.service';
+import { API_URLS } from '../shared/config/urls';
 import { MOCK_WORKOUTS } from '../shared/mocks/mock-workouts';
 import { IWorkout } from '../shared/models/workout-exercises.model';
 
@@ -10,7 +11,10 @@ import { IWorkout } from '../shared/models/workout-exercises.model';
   providedIn: 'root',
 })
 export class WorkoutService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   getAll(): Observable<IWorkout[]> {
     if (environment.useMocks) {
@@ -25,7 +29,13 @@ export class WorkoutService {
       return of({ ok: true });
     }
 
-    return this.http.post<unknown>(`${environment.apiBaseUrl}${API_URLS.workouts}`, payload);
+    const userId = this.getUserIdentifier();
+    const payloadWithUser = userId ? { ...payload, userId } : payload;
+
+    return this.http.post<unknown>(
+      `${environment.apiBaseUrl}${API_URLS.workouts}`,
+      payloadWithUser
+    );
   }
 
   delete(id: string): Observable<unknown> {
@@ -34,6 +44,28 @@ export class WorkoutService {
     }
 
     return this.http.delete<unknown>(`${environment.apiBaseUrl}${API_URLS.workoutById(id)}`);
+  }
+
+  private getUserIdentifier(): string | null {
+    const session = this.authService.getSession();
+    const user = session?.user;
+    if (!user) {
+      return null;
+    }
+
+    if (typeof user === 'string') {
+      return user;
+    }
+
+    if (user.id !== undefined && user.id !== null) {
+      return String(user.id);
+    }
+
+    if (user.email) {
+      return user.email;
+    }
+
+    return null;
   }
 }
 
@@ -44,5 +76,5 @@ export type WorkoutCreatePayload = {
     sets: number;
     reps: number;
   }>;
+  userId?: string;
 };
-

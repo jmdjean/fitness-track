@@ -22,11 +22,11 @@
             <mat-form-field appearance="fill" class="exercise-field">
               <mat-label>Exercício</mat-label>
               <mat-select
-                [value]="exercise.exercise"
+                [value]="exercise.exerciseId"
                 (selectionChange)="onExerciseChange(i, $event.value)"
               >
-                <mat-option *ngFor="let item of availableExercises" [value]="item">
-                  {{ item }}
+                <mat-option *ngFor="let item of availableExercises" [value]="item.id">
+                  {{ item.nome }}
                 </mat-option>
               </mat-select>
             </mat-form-field>

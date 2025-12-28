@@ -1,9 +1,9 @@
 import { Component, signal, type WritableSignal } from '@angular/core';
 import { form, type FieldTree } from '@angular/forms/signals';
 import { Router } from '@angular/router';
-import { applyRequiredEmail, applyRequiredPassword } from '../../shared/signal-forms/validators';
 import { LoadingService } from '../../shared/services/loading.service';
 import { NotificationHelperService } from '../../shared/services/notification-helper.service';
+import { applyRequiredEmail, applyRequiredPassword } from '../../shared/signal-forms/validators';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -55,9 +55,9 @@ export class LoginComponent {
         next: () => {
           this.router.navigate(['/finished-traning']);
         },
-        error: (error) => {
+        error: (request) => {
           this.notificationHelper.showError(
-            error?.error ?? 'Erro ao realizar login.'
+            request?.error?.error ?? 'Erro ao realizar login.'
           );
         },
       });

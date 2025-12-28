@@ -32,10 +32,12 @@ export class QuestionsComponent {
           this.responseMessage = this.formatResponse(response);
           this.question = '';
         },
-        error: (error) => {
+        error: (request) => {
           this.responseMessage = '';
-          console.log(error);
-          this.notificationHelper.showError('Erro ao enviar pergunta.');
+          console.log(request);
+          this.notificationHelper.showError(
+            request?.error?.error ?? 'Erro ao enviar pergunta.'
+          );
         },
       });
   }

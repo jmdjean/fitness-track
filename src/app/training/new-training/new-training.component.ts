@@ -3,6 +3,7 @@ import { form, required, type FieldTree } from '@angular/forms/signals';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ExerciseService } from '../../shared/services/exercise.service';
 import { NotificationHelperService } from '../../shared/services/notification-helper.service';
+import { IIdNome } from '../../shared/models/id-nome.model';
 import { WorkoutService } from '../workout.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class NewTrainingComponent implements OnInit {
   readonly workoutModel = this.createWorkoutModel();
   readonly workoutForm = this.createWorkoutForm();
   exercises: WorkoutExerciseForm[] = [this.createExerciseRow()];
-  availableExercises: string[] = [];
+  availableExercises: IIdNome[] = [];
 
   constructor(
     private exerciseService: ExerciseService,
@@ -29,7 +30,7 @@ export class NewTrainingComponent implements OnInit {
   }
 
   onExerciseChange(index: number, value: string): void {
-    this.exercises[index].exercise = value;
+    this.exercises[index].exerciseId = value;
   }
 
   onSetsChange(index: number, value: string): void {
@@ -61,7 +62,7 @@ export class NewTrainingComponent implements OnInit {
     const payload = {
       name: this.workoutModel().name.trim(),
       exercises: this.exercises.map((exercise) => ({
-        exercise: exercise.exercise,
+        exercise: exercise.exerciseId,
         sets: exercise.sets,
         reps: exercise.reps,
       })),
@@ -73,9 +74,9 @@ export class NewTrainingComponent implements OnInit {
         next: () => {
           this.resetForm();
         },
-        error: (error) => {
+        error: (request) => {
           this.notificationHelper.showError(
-            error?.error ?? 'Erro ao salvar treino.'
+            request?.error?.error ?? 'Erro ao salvar treino.'
           );
         },
       });
@@ -89,7 +90,7 @@ export class NewTrainingComponent implements OnInit {
 
   private createExerciseRow(): WorkoutExerciseForm {
     return {
-      exercise: '',
+      exerciseId: '',
       sets: 2,
       reps: 10,
     };
@@ -109,7 +110,7 @@ export class NewTrainingComponent implements OnInit {
       return false;
     }
 
-    return this.exercises.every((exercise) => exercise.exercise);
+    return this.exercises.every((exercise) => exercise.exerciseId);
   }
 
   private resetForm(): void {
@@ -131,7 +132,7 @@ export class NewTrainingComponent implements OnInit {
 }
 
 type WorkoutExerciseForm = {
-  exercise: string;
+  exerciseId: string;
   sets: number;
   reps: number;
 };
