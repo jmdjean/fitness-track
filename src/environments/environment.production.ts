@@ -1,4 +1,4 @@
 export const environment = {
   useMocks: false,
-  apiBaseUrl: 'https://publicado.com.br',
+  apiBaseUrl: 'https://fitness-track-backend.onrender.com',
 };
