@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ExerciseName } from '../../shared/enums/exercise-name.enum';
-import { SelectedExercise } from '../../shared/models/selected-exercise.model';
+import { Component, OnInit, signal, type WritableSignal } from '@angular/core';
+import { form, required, type FieldTree } from '@angular/forms/signals';
+import { LoadingService } from '../../shared/services/loading.service';
+import { ExerciseService } from '../../shared/services/exercise.service';
+import { NotificationHelperService } from '../../shared/services/notification-helper.service';
+import { WorkoutService } from '../workout.service';
 
 @Component({
     selector: 'app-new-training',
@@ -8,48 +11,131 @@ import { SelectedExercise } from '../../shared/models/selected-exercise.model';
     styleUrls: ['./new-training.component.scss'],
     standalone: false
 })
-export class NewTrainingComponent {
-  @Output() startTraining = new EventEmitter<SelectedExercise[]>();
+export class NewTrainingComponent implements OnInit {
+  readonly workoutModel = this.createWorkoutModel();
+  readonly workoutForm = this.createWorkoutForm();
+  exercises: WorkoutExerciseForm[] = [this.createExerciseRow()];
+  availableExercises: string[] = [];
 
-  selectedExerciseNames: ExerciseName[] = [];
-  selectedExercises: SelectedExercise[] = [];
+  constructor(
+    private exerciseService: ExerciseService,
+    private workoutService: WorkoutService,
+    private loadingService: LoadingService,
+    private notificationHelper: NotificationHelperService
+  ) {}
 
-  availableExercises = Object.values(ExerciseName).map((exercise) => ({
-    value: exercise,
-    label: this.formatLabel(exercise),
-  }));
+  ngOnInit(): void {
+    this.loadExercises();
+  }
 
-  onExercisesChange(selectedNames: ExerciseName[]) {
-    this.selectedExerciseNames = selectedNames;
-    const existing = new Map(this.selectedExercises.map((item) => [item.name, item]));
+  onExerciseChange(index: number, value: string): void {
+    this.exercises[index].exercise = value;
+  }
 
-    this.selectedExercises = selectedNames.map((name) => {
-      const current = existing.get(name);
-      return current ? current : { name, reps: 10 };
+  onSetsChange(index: number, value: string): void {
+    this.exercises[index].sets = this.normalizeNumber(value, 1, 50);
+  }
+
+  onRepsChange(index: number, value: string): void {
+    this.exercises[index].reps = this.normalizeNumber(value, 1, 100);
+  }
+
+  addExerciseRow(): void {
+    this.exercises = [...this.exercises, this.createExerciseRow()];
+  }
+
+  removeExerciseRow(index: number): void {
+    if (this.exercises.length === 1) {
+      this.exercises = [this.createExerciseRow()];
+      return;
+    }
+
+    this.exercises = this.exercises.filter((_, i) => i !== index);
+  }
+
+  saveWorkout(): void {
+    if (!this.isFormValid()) {
+      return;
+    }
+
+    const payload = {
+      name: this.workoutModel().name.trim(),
+      exercises: this.exercises.map((exercise) => ({
+        exercise: exercise.exercise,
+        sets: exercise.sets,
+        reps: exercise.reps,
+      })),
+    };
+
+    this.loadingService
+      .track(this.workoutService.create(payload))
+      .subscribe({
+        next: () => {
+          this.resetForm();
+        },
+        error: (error) => {
+          this.notificationHelper.showError(
+            error?.error ?? 'Erro ao salvar treino.'
+          );
+        },
+      });
+  }
+
+  private loadExercises(): void {
+    this.exerciseService.getAll().subscribe((data) => {
+      this.availableExercises = data;
     });
   }
 
-  onRepsChange(exercise: SelectedExercise, value: string) {
+  private createExerciseRow(): WorkoutExerciseForm {
+    return {
+      exercise: '',
+      sets: 2,
+      reps: 10,
+    };
+  }
+
+  private normalizeNumber(value: string, min: number, max: number): number {
     const parsed = Number(value);
-    const normalized = Number.isFinite(parsed) ? Math.min(100, Math.max(1, Math.round(parsed))) : 1;
-    exercise.reps = normalized;
+    if (!Number.isFinite(parsed)) {
+      return min;
+    }
+
+    return Math.min(max, Math.max(min, Math.round(parsed)));
   }
 
-  onStartTraining() {
-    this.startTraining.emit(this.selectedExercises);
+  private isFormValid(): boolean {
+    if (this.workoutForm().invalid()) {
+      return false;
+    }
+
+    return this.exercises.every((exercise) => exercise.exercise);
   }
 
-  get estimatedSeconds(): number {
-    const totalReps = this.selectedExercises.reduce((sum, exercise) => sum + exercise.reps, 0);
-    return totalReps * 9;
+  private resetForm(): void {
+    this.workoutModel.set({ name: '' });
+    this.exercises = [this.createExerciseRow()];
   }
 
-  removeExercise(exerciseName: ExerciseName) {
-    this.selectedExerciseNames = this.selectedExerciseNames.filter((item) => item !== exerciseName);
-    this.selectedExercises = this.selectedExercises.filter((item) => item.name !== exerciseName);
+  private createWorkoutModel(): WritableSignal<WorkoutFormModel> {
+    return signal({
+      name: '',
+    });
   }
 
-  formatLabel(name: string): string {
-    return name.replace(/([a-z])([A-Z])/g, '$1 $2');
+  private createWorkoutForm(): FieldTree<WorkoutFormModel> {
+    return form(this.workoutModel, (workout) => {
+      required(workout.name);
+    });
   }
 }
+
+type WorkoutExerciseForm = {
+  exercise: string;
+  sets: number;
+  reps: number;
+};
+
+type WorkoutFormModel = {
+  name: string;
+};

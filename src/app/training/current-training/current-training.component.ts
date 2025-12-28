@@ -13,8 +13,8 @@ import {
   Output,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { delay } from 'rxjs/operators';
+import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { IWorkout } from '../../shared/models/workout-exercises.model';
 import { LoadingService } from '../../shared/services/loading.service';
 import { WorkoutService } from '../workout.service';
@@ -45,15 +45,15 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
   private timerId: number | null = null;
   workouts: IWorkout[] = [];
   expandedElement: IWorkout | null = null;
-  displayedColumns: Array<'expand' | 'name' | 'quantity'> = [
+  displayedColumns: Array<'expand' | 'name' | 'quantity' | 'actions'> = [
     'expand',
     'name',
     'quantity',
+    'actions',
   ];
 
   constructor(
     private dialog: MatDialog,
-    private router: Router,
     private workoutService: WorkoutService,
     private loadingService: LoadingService
   ) {}
@@ -62,7 +62,7 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
     this.loadWorkouts();
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy(): void {}
 
   toggleRow(workout: IWorkout): void {
     this.expandedElement = this.expandedElement === workout ? null : workout;
@@ -70,6 +70,30 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
 
   totalExercises(workout: IWorkout): number {
     return workout.exercises.length;
+  }
+
+  deleteWorkout(workout: IWorkout, event: Event): void {
+    event.stopPropagation();
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmar exclusao',
+        message: `Tem certeza que deseja excluir o treino ${workout.name}?`,
+        actionButtonText: 'Excluir',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+
+      this.loadingService
+        .track(this.workoutService.delete(workout.id))
+        .subscribe(() => {
+          this.workouts = this.workouts.filter((item) => item.id !== workout.id);
+        });
+    });
   }
 
   private loadWorkouts(): void {

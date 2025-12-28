@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Field } from '@angular/forms/signals';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,6 +15,7 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
 import { BodyMetricsComponent } from './shared/components/body-metrics/body-metrics.component';
 import { TagSpecComponent } from './shared/components/tag-spec/tag-spec.component';
 import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
+import { AuthContextInterceptor } from './auth/auth-context.interceptor';
 import { FormatMinutesPipe } from './shared/pipes/format-minutes.pipe';
 import { FormatDurationPipe } from './shared/pipes/format-duration.pipe';
 import { CurrentTrainingComponent } from './training/current-training/current-training.component';
@@ -22,6 +24,7 @@ import { NewTrainingComponent } from './training/new-training/new-training.compo
 import { PastTrainingComponent } from './training/past-training/past-training.component';
 import { StopTrainingComponent } from './training/stop-training/stop-training.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { QuestionsComponent } from './questions/questions.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     NewTrainingComponent,
     PastTrainingComponent,
     StopTrainingComponent,
+    QuestionsComponent,
     WelcomeComponent,
   ],
   imports: [
@@ -50,7 +54,13 @@ import { WelcomeComponent } from './welcome/welcome.component';
     BodyMetricsComponent,
     MaterialModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthContextInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,45 +1,46 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>Montar treino</mat-card-title>
-    <mat-card-subtitle>Selecione os exercícios para começar</mat-card-subtitle>
+    <mat-card-subtitle>Cadastre um novo treino</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
     <div class="content-grid">
-      <div class="selection-panel">
-        <mat-form-field appearance="fill">
-          <mat-label>Exercícios</mat-label>
-          <mat-select
-            multiple
-            [value]="selectedExerciseNames"
-            (selectionChange)="onExercisesChange($event.value)"
-          >
-            <mat-select-trigger>
-              {{ selectedExerciseNames.length }} selecionado(s)
-            </mat-select-trigger>
-            <mat-option *ngFor="let exercise of availableExercises" [value]="exercise.value">
-              {{ exercise.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <p class="selection-helper">
-          Escolha um ou mais exercícios para montar seu treino.
-        </p>
-
-        <div class="estimate-card">
-          <div class="estimate-header">
-            <mat-icon aria-hidden="true">schedule</mat-icon>
-            <span class="estimate-label">Estimativa de duração</span>
-          </div>
-          <span class="estimate-value">{{ estimatedSeconds | formatDuration }}</span>
-        </div>
-      </div>
+      <mat-form-field appearance="fill" class="name-field">
+        <mat-label>Nome do treino</mat-label>
+        <input
+          matInput
+          type="text"
+          [field]="workoutForm.name"
+        />
+      </mat-form-field>
 
       <div class="selected-section">
-        <div class="selected-header">Exercícios escolhidos</div>
-        <div *ngIf="selectedExercises.length; else emptyState" class="selected-list">
-          <div class="exercise-row" *ngFor="let exercise of selectedExercises">
-            <div class="exercise-name">{{ formatLabel(exercise.name) }}</div>
+        <div class="selected-header">Exercícios</div>
+        <div class="selected-list">
+          <div class="exercise-row" *ngFor="let exercise of exercises; let i = index">
+            <mat-form-field appearance="fill" class="exercise-field">
+              <mat-label>Exercício</mat-label>
+              <mat-select
+                [value]="exercise.exercise"
+                (selectionChange)="onExerciseChange(i, $event.value)"
+              >
+                <mat-option *ngFor="let item of availableExercises" [value]="item">
+                  {{ item }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="sets-field">
+              <mat-label>Séries</mat-label>
+              <input
+                matInput
+                type="number"
+                min="1"
+                max="50"
+                [value]="exercise.sets"
+                (input)="onSetsChange(i, $any($event.target).value)"
+              />
+            </mat-form-field>
             <mat-form-field appearance="fill" class="reps-field">
               <mat-label>Repetições</mat-label>
               <input
@@ -48,22 +49,28 @@
                 min="1"
                 max="100"
                 [value]="exercise.reps"
-                (input)="onRepsChange(exercise, $any($event.target).value)"
+                (input)="onRepsChange(i, $any($event.target).value)"
               />
             </mat-form-field>
-            <button
-              mat-icon-button
-              color="warn"
-              aria-label="Remover exercício"
-              (click)="removeExercise(exercise.name)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+            <div class="row-actions">
+              <button
+                mat-icon-button
+                aria-label="Adicionar exercício"
+                (click)="addExerciseRow()"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                aria-label="Remover exercício"
+                (click)="removeExerciseRow(i)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
         </div>
-        <ng-template #emptyState>
-          <span class="selected-empty">Selecione um ou mais exercícios no dropdown.</span>
-        </ng-template>
       </div>
     </div>
   </mat-card-content>
@@ -72,10 +79,10 @@
     <button
       mat-raised-button
       color="primary"
-      (click)="onStartTraining()"
-      [disabled]="!selectedExercises.length"
+      (click)="saveWorkout()"
+      [disabled]="workoutForm().invalid() || !exercises.length"
     >
-      Iniciar treino
+      Salvar novo treino
     </button>
   </mat-card-actions>
 </mat-card>

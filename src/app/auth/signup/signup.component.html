@@ -1,11 +1,9 @@
-﻿<section class="login-screen">
+<section class="login-screen">
   <div class="top-cta">
-      <span>Já possui cadastro?</span>
-      <a routerLink="/login" class="link">Faça o login aqui</a>
-    </div>
+    <span>Já possui cadastro?</span>
+    <a routerLink="/login" class="link">Faça o login aqui</a>
+  </div>
   <div class="login-shell">
-
-
     <div class="logo-circle">
       <mat-icon>fitness_center</mat-icon>
     </div>
@@ -64,7 +62,7 @@
               autocomplete="new-password"
             />
             <mat-error *ngIf="shouldShowError(signupForm.password) && hasError(signupForm.password, 'required')"
-              >Senha obrigatóia</mat-error
+              >Senha obrigatória</mat-error
             >
             <mat-error *ngIf="shouldShowError(signupForm.password) && hasError(signupForm.password, 'minLength')"
               >Mínimo de 6 caracteres</mat-error

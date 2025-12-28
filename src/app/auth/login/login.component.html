@@ -7,7 +7,6 @@
 
     <mat-card class="login-card">
       <form
-        [formGroup]="loginForm"
         (ngSubmit)="execLogin()"
         class="login-form"
         autocomplete="off"
@@ -17,13 +16,13 @@
           <input
             matInput
             type="email"
-            formControlName="email"
+            [field]="loginForm.email"
             autocomplete="off"
           />
-          <mat-error *ngIf="loginForm.get('email')?.hasError('required')"
+          <mat-error *ngIf="shouldShowError(loginForm.email) && hasError(loginForm.email, 'required')"
             >E-mail obrigatório</mat-error
           >
-          <mat-error *ngIf="loginForm.get('email')?.hasError('email')"
+          <mat-error *ngIf="shouldShowError(loginForm.email) && hasError(loginForm.email, 'email')"
             >Digite um e-mail válido</mat-error
           >
         </mat-form-field>
@@ -33,10 +32,10 @@
           <input
             matInput
             type="password"
-            formControlName="password"
+            [field]="loginForm.password"
             autocomplete="new-password"
           />
-          <mat-error *ngIf="loginForm.get('password')?.hasError('required')"
+          <mat-error *ngIf="shouldShowError(loginForm.password) && hasError(loginForm.password, 'required')"
             >Senha obrigatória</mat-error
           >
         </mat-form-field>
@@ -49,7 +48,7 @@
           mat-flat-button
           class="signin-btn"
           type="submit"
-          [disabled]="loginForm.invalid"
+          [disabled]="loginForm().invalid()"
         >
           Entrar
         </button>

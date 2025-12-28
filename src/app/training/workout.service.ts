@@ -18,4 +18,29 @@ export class WorkoutService {
 
     return this.http.get<IWorkout[]>(`${environment.apiBaseUrl}/workouts`);
   }
+
+  create(payload: WorkoutCreatePayload): Observable<unknown> {
+    if (environment.useMocks) {
+      return of({ ok: true });
+    }
+
+    return this.http.post<unknown>(`${environment.apiBaseUrl}/workouts`, payload);
+  }
+
+  delete(id: string): Observable<unknown> {
+    if (environment.useMocks) {
+      return of({ ok: true });
+    }
+
+    return this.http.delete<unknown>(`${environment.apiBaseUrl}/workouts/${id}`);
+  }
 }
+
+export type WorkoutCreatePayload = {
+  name: string;
+  exercises: Array<{
+    exercise: string;
+    sets: number;
+    reps: number;
+  }>;
+};

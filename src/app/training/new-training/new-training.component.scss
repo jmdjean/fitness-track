@@ -14,58 +14,14 @@ mat-form-field {
 
 .content-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 1fr) 2fr;
+  grid-template-columns: 1fr;
   gap: 20px;
   align-items: start;
 }
 
-.selection-panel {
-  padding: 12px;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.02);
-}
-
-.selection-helper {
-  margin: 8px 0 0;
-  font-size: 13px;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.estimate-card {
+.name-field {
+  max-width: 520px;
   margin-top: 16px;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.estimate-header {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.estimate-header mat-icon {
-  font-size: 18px;
-  height: 18px;
-  width: 18px;
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.estimate-label {
-  font-size: 12px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 600;
-}
-
-.estimate-value {
-  font-size: 26px;
-  font-weight: 600;
 }
 
 .selected-section {
@@ -79,11 +35,6 @@ mat-form-field {
   margin-bottom: 8px;
 }
 
-.selected-empty {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 13px;
-}
-
 .selected-list {
   display: flex;
   flex-direction: column;
@@ -92,7 +43,7 @@ mat-form-field {
 
 .exercise-row {
   display: grid;
-  grid-template-columns: 1fr 160px auto;
+  grid-template-columns: minmax(220px, 1fr) 140px 140px auto;
   gap: 12px;
   align-items: center;
   padding: 8px 12px;
@@ -101,10 +52,23 @@ mat-form-field {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-.exercise-name {
-  font-weight: 600;
+.row-actions {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
 }
 
+.sets-field,
 .reps-field {
   width: 100%;
+}
+
+@media (max-width: 900px) {
+  .exercise-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .row-actions {
+    justify-content: flex-end;
+  }
 }
