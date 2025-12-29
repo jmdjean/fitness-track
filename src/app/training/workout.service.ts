@@ -51,6 +51,36 @@ export class WorkoutService {
     );
   }
 
+  getLastWeekCount(): Observable<WorkoutLastWeekCountResponse> {
+    if (environment.useMocks) {
+      return of({ count: 0, startDate: '', endDate: '' });
+    }
+
+    return this.http.get<WorkoutLastWeekCountResponse>(
+      `${environment.apiBaseUrl}${API_URLS.workoutDonesLastWeekCount}`
+    );
+  }
+
+  getLastWeekCalories(): Observable<WorkoutLastWeekCaloriesResponse> {
+    if (environment.useMocks) {
+      return of({ totalCalories: 0, startDate: '', endDate: '' });
+    }
+
+    return this.http.get<WorkoutLastWeekCaloriesResponse>(
+      `${environment.apiBaseUrl}${API_URLS.workoutDonesLastWeekCalories}`
+    );
+  }
+
+  getLastWeekMaxWeightExercise(): Observable<WorkoutLastWeekMaxWeightResponse> {
+    if (environment.useMocks) {
+      return of({ exerciseName: '', maxWeightKg: 0, startDate: '', endDate: '' });
+    }
+
+    return this.http.get<WorkoutLastWeekMaxWeightResponse>(
+      `${environment.apiBaseUrl}${API_URLS.workoutDonesLastWeekMaxWeight}`
+    );
+  }
+
   askDonesQuestion(payload: { question: string }): Observable<{ data?: string[]; raw?: unknown[] }> {
     if (environment.useMocks) {
       return of({ data: [], raw: [] });
@@ -137,4 +167,23 @@ export type WorkoutDoneCreatePayload = {
     reps: number;
     weightKg: number;
   }>;
+};
+
+export type WorkoutLastWeekCountResponse = {
+  count: number;
+  startDate: string;
+  endDate: string;
+};
+
+export type WorkoutLastWeekCaloriesResponse = {
+  totalCalories: number;
+  startDate: string;
+  endDate: string;
+};
+
+export type WorkoutLastWeekMaxWeightResponse = {
+  exerciseName: string;
+  maxWeightKg: number;
+  startDate: string;
+  endDate: string;
 };

@@ -4,7 +4,9 @@
 
 .welcome-wrapper {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  gap: 16px;
 }
 
 .welcome-card {
@@ -64,4 +66,78 @@
   .welcome-illustration img {
     width: min(420px, 70vw);
   }
+}
+
+.welcome-stats {
+  display: flex;
+  justify-content: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  min-width: 260px;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-title {
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.stat-subtitle {
+  font-size: 0.85rem;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.stat-card--mint {
+  background: #c7f7ee;
+  color: #0f172a;
+}
+
+.stat-card--mint .stat-icon {
+  background: rgba(16, 185, 129, 0.18);
+  color: #0f766e;
+}
+
+.stat-card--blue {
+  background: #dbeafe;
+  color: #0f172a;
+}
+
+.stat-card--blue .stat-icon {
+  background: rgba(59, 130, 246, 0.2);
+  color: #1d4ed8;
+}
+
+.stat-card--violet {
+  background: #ede9fe;
+  color: #0f172a;
+}
+
+.stat-card--violet .stat-icon {
+  background: rgba(139, 92, 246, 0.2);
+  color: #6d28d9;
 }

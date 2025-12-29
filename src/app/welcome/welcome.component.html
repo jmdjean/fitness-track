@@ -4,18 +4,49 @@
       <img
         class="welcome-avatar"
         src="/assets/images/profile/user-1.jpg"
-        alt="Avatar do usuário"
+        alt="Avatar do usuÇ­rio"
       />
       <div>
-        <h2>Bem-vindo de volta, {{ userName$ | async }} 👋</h2>
-        <p>Confira seus treinos e métricas do dia.</p>
+        <h2>Bem-vindo de volta, {{ userName$ | async }} ÐY'<</h2>
+        <p>Confira seus treinos e mÇ¸tricas do dia.</p>
       </div>
     </div>
     <div class="welcome-illustration">
       <img
         src="/assets/images/backgrounds/welcome-bg2.png"
-        alt="Ilustração de boas-vindas"
+        alt="IlustraÇõÇœo de boas-vindas"
       />
+    </div>
+  </div>
+
+  <div class="welcome-stats">
+    <div class="stat-card stat-card--mint">
+      <div class="stat-icon">
+        <mat-icon>fitness_center</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-title">Treinos dessa semana</span>
+        <span class="stat-value">{{ workoutsThisWeek }}</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--blue">
+      <div class="stat-icon">
+        <mat-icon>local_fire_department</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-title">Calorias na semana</span>
+        <span class="stat-value">{{ caloriesThisWeek }}</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--violet">
+      <div class="stat-icon">
+        <mat-icon>monitor_weight</mat-icon>
+      </div>
+      <div class="stat-content">
+        <span class="stat-title">Maior peso da semana</span>
+        <span class="stat-value">{{ maxWeightKg }} kg</span>
+        <span class="stat-subtitle">{{ maxWeightExerciseName || '-' }}</span>
+      </div>
     </div>
   </div>
 </section>
