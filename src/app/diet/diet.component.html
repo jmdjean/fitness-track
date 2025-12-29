@@ -1,0 +1,19 @@
+<section class="diet-page">
+  <mat-card class="diet-card">
+    <mat-card-title>Dieta</mat-card-title>
+    <mat-card-content>
+      <div *ngIf="entries.length" class="diet-content">
+        <dl class="diet-list">
+          <div *ngFor="let entry of entries" class="diet-row">
+            <dt>{{ entry.key }}</dt>
+            <dd>{{ entry.value }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <button mat-flat-button color="primary" (click)="generateDiet()">
+        Gerar dieta com base nas minhas informações
+      </button>
+    </mat-card-content>
+  </mat-card>
+</section>

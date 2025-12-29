@@ -55,6 +55,8 @@ export class SignupComponent {
       password: '',
       confirmPassword: '',
       birthdate: null as Date | null,
+      sexo: '',
+      objetivo: '',
       bodyMetrics: {
         weightKg: null,
         heightCm: null,
@@ -69,6 +71,8 @@ export class SignupComponent {
       applyRequiredPassword(signup.password, 6);
       applyRequiredPassword(signup.confirmPassword, 6);
       applyRequiredDate(signup.birthdate);
+      required(signup.sexo);
+      required(signup.objetivo);
       applyBodyMetricsValidation(signup.bodyMetrics);
       applyPasswordConfirmation(signup);
     });
@@ -80,11 +84,13 @@ export class SignupComponent {
     this.signupForm.password().markAsTouched();
     this.signupForm.confirmPassword().markAsTouched();
     this.signupForm.birthdate().markAsTouched();
+    this.signupForm.sexo().markAsTouched();
+    this.signupForm.objetivo().markAsTouched();
     this.signupForm.bodyMetrics().markAsTouched();
   }
 
   private registerUser(): void {
-    const { name, email, password, confirmPassword, birthdate, bodyMetrics } =
+    const { name, email, password, confirmPassword, birthdate, sexo, objetivo, bodyMetrics } =
       this.signupModel();
     this.loadingService
       .track(
@@ -94,6 +100,8 @@ export class SignupComponent {
           password,
           confirmPassword,
           birthdate,
+          sexo,
+          objetivo,
           bodyMetrics,
         })
       )
@@ -139,5 +147,7 @@ type SignupModel = {
   password: string;
   confirmPassword: string;
   birthdate: Date | null;
+  sexo: 'homem' | 'mulher' | '';
+  objetivo: 'Ganho de massa' | 'Perder peso' | 'Manutencao de massa magra' | '';
   bodyMetrics: BodyMetrics;
 };

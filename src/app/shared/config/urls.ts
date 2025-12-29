@@ -9,6 +9,8 @@ export const API_URLS = {
   workoutDonesLastWeekMaxWeight: '/workout/dones/stats/last-week/max-weight-exercise',
   workoutDonesQuestion: '/workout/dones/question',
   exercises: '/exercises',
+  dietLatest: '/diet/latest',
+  dietGenerate: '/diet/generate',
   authRegister: '/auth/register',
   authLogin: '/auth/login',
 } as const;

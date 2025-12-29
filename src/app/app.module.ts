@@ -24,6 +24,7 @@ import { TagSpecComponent } from './shared/components/tag-spec/tag-spec.componen
 import { WorkoutDetailsDialogComponent } from './shared/components/workout-details-dialog/workout-details-dialog.component';
 import { WorkoutDonesComponent } from './training/workout-dones/workout-dones.component';
 import { AskWorkoutFormComponent } from './ask-workout-form/ask-workout-form.component';
+import { DietComponent } from './diet/diet.component';
 import { FormatDurationPipe } from './shared/pipes/format-duration.pipe';
 import { FormatMinutesPipe } from './shared/pipes/format-minutes.pipe';
 import { CurrentTrainingComponent } from './training/current-training/current-training.component';
@@ -43,6 +44,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     TagSpecComponent,
     LoadingSpinnerComponent,
     AskWorkoutFormComponent,
+    DietComponent,
     CurrentTrainingComponent,
     FinishedTraningComponent,
     FormatMinutesPipe,

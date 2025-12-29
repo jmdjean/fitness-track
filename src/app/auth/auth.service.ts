@@ -12,6 +12,8 @@ export type RegisterPayload = {
   password: string;
   confirmPassword: string;
   birthdate: Date | null;
+  sexo: 'homem' | 'mulher' | '';
+  objetivo: 'Ganho de massa' | 'Perder peso' | 'Manutencao de massa magra' | '';
   bodyMetrics: BodyMetrics;
 };
 

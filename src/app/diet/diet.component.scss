@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+.diet-page {
+  min-height: calc(100vh - 64px);
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.diet-card {
+  width: min(900px, 100%);
+}
+
+.diet-content {
+  margin-bottom: 16px;
+}
+
+.diet-list {
+  margin: 0 0 16px;
+  display: grid;
+  gap: 8px;
+}
+
+.diet-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 12px;
+}
+
+.diet-row dt {
+  font-weight: 600;
+}
+
+.diet-row dd {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.7);
+  white-space: pre-line;
+}
+
+.diet-empty {
+  margin: 0 0 16px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 900px) {
+  .diet-row {
+    grid-template-columns: 1fr;
+  }
+}

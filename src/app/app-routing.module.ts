@@ -9,6 +9,7 @@ import { NewTrainingComponent } from './training/new-training/new-training.compo
 import { WorkoutDonesComponent } from './training/workout-dones/workout-dones.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AskWorkoutFormComponent } from './ask-workout-form/ask-workout-form.component';
+import { DietComponent } from './diet/diet.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'current-training', component: CurrentTrainingComponent },
   { path: 'finished-traning', component: FinishedTraningComponent },
   { path: 'workout-dones', component: WorkoutDonesComponent },
+  { path: 'diet', component: DietComponent },
 ];
 
 @NgModule({
