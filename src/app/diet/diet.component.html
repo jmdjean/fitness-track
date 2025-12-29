@@ -2,14 +2,75 @@
   <mat-card class="diet-card">
     <mat-card-title>Dieta</mat-card-title>
     <mat-card-content>
-      <div *ngIf="entries.length" class="diet-content">
-        <dl class="diet-list">
-          <div *ngFor="let entry of entries" class="diet-row">
-            <dt>{{ entry.key }}</dt>
-            <dd>{{ entry.value }}</dd>
+      <div *ngIf="plan; else emptyState" class="diet-content">
+        <div class="diet-meta">
+          <div class="meta-block" *ngIf="plan.goal">
+            <span class="meta-label">Objetivo</span>
+            <span class="meta-value">{{ plan.goal }}</span>
           </div>
-        </dl>
+          <div class="meta-block" *ngIf="updatedAt">
+            <span class="meta-label">Atualizado em</span>
+            <span class="meta-value">{{ updatedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        </div>
+
+        <div class="diet-grid">
+          <div class="diet-panel" *ngIf="plan.profile">
+            <h3>Perfil</h3>
+            <ul>
+              <li *ngIf="plan.profile.age">Idade: {{ plan.profile.age }}</li>
+              <li *ngIf="plan.profile.sex">Sexo: {{ plan.profile.sex }}</li>
+              <li *ngIf="plan.profile.heightCm">Altura: {{ plan.profile.heightCm }} cm</li>
+              <li *ngIf="plan.profile.weightKg">Peso: {{ plan.profile.weightKg }} kg</li>
+            </ul>
+          </div>
+
+          <div class="diet-panel" *ngIf="plan.targets">
+            <h3>Metas diárias</h3>
+            <ul>
+              <li *ngIf="plan.targets.calories">Calorias: {{ plan.targets.calories }}</li>
+              <li *ngIf="plan.targets.protein_g">Proteínas: {{ plan.targets.protein_g }} g</li>
+              <li *ngIf="plan.targets.carbs_g">Carboidratos: {{ plan.targets.carbs_g }} g</li>
+              <li *ngIf="plan.targets.fat_g">Gorduras: {{ plan.targets.fat_g }} g</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="diet-days">
+          <div class="diet-day" *ngFor="let day of plan.days">
+            <div class="day-header">
+              <h3>{{ day.day | date: 'dd/MM/yyyy' }}</h3>
+              <span *ngIf="day.notes" class="day-notes">{{ day.notes }}</span>
+            </div>
+
+            <div class="meals">
+              <div class="meal-card" *ngFor="let meal of day.meals">
+                <div class="meal-header">
+                  <h4>{{ meal.name }}</h4>
+                  <span class="meal-calories">{{ meal.totalCalories }} kcal</span>
+                </div>
+                <ul>
+                  <li *ngFor="let item of meal.items">
+                    <span class="meal-item">{{ item.name }}</span>
+                    <span class="meal-qty">{{ item.quantity }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="diet-notes" *ngIf="plan.notes?.length">
+          <h3>Observações</h3>
+          <ul>
+            <li *ngFor="let note of plan.notes">{{ note }}</li>
+          </ul>
+        </div>
       </div>
+
+      <ng-template #emptyState>
+        <p class="diet-empty">Nenhuma dieta encontrada.</p>
+      </ng-template>
 
       <button mat-flat-button color="primary" (click)="generateDiet()">
         Gerar dieta com base nas minhas informações

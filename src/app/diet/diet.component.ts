@@ -2,6 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingService } from '../shared/services/loading.service';
 import { DietService, type DietResponse } from './diet.service';
 
+type DietPlan = {
+  days: Array<{
+    day: string;
+    meals: Array<{
+      name: string;
+      items: Array<{ name: string; quantity: string }>;
+      totalCalories: number;
+    }>;
+    notes?: string;
+  }>;
+  goal?: string;
+  notes?: string[];
+  profile?: {
+    age?: number;
+    sex?: string;
+    heightCm?: number;
+    weightKg?: number;
+  };
+  targets?: {
+    calories?: number;
+    protein_g?: number;
+    carbs_g?: number;
+    fat_g?: number;
+  };
+};
+
 @Component({
   selector: 'app-diet',
   templateUrl: './diet.component.html',
@@ -9,6 +35,8 @@ import { DietService, type DietResponse } from './diet.service';
   standalone: false,
 })
 export class DietComponent implements OnInit {
+  plan: DietPlan | null = null;
+  updatedAt = '';
   entries: Array<{ key: string; value: string }> = [];
 
   constructor(
@@ -24,7 +52,7 @@ export class DietComponent implements OnInit {
     this.loadingService
       .track(this.dietService.generate())
       .subscribe((data) => {
-        this.entries = this.normalizeEntries(data);
+        this.applyDiet(data);
       });
   }
 
@@ -32,46 +60,19 @@ export class DietComponent implements OnInit {
     this.loadingService
       .track(this.dietService.getLatest())
       .subscribe((data) => {
-        this.entries = this.normalizeEntries(data);
+        this.applyDiet(data);
       });
   }
 
-  private normalizeEntries(data: DietResponse): Array<{ key: string; value: string }> {
+  private applyDiet(data: DietResponse): void {
     if (!data || typeof data !== 'object') {
-      return [];
+      this.plan = null;
+      this.updatedAt = '';
+      return;
     }
 
-    return Object.entries(data).map(([key, value]) => ({
-      key: this.humanizeKey(key),
-      value: this.stringifyValue(value),
-    }));
-  }
-
-  private humanizeKey(value: string): string {
-    return value
-      .replace(/_/g, ' ')
-      .replace(/([a-z])([A-Z])/g, '$1 $2')
-      .trim()
-      .replace(/\b\w/g, (letter) => letter.toUpperCase());
-  }
-
-  private stringifyValue(value: unknown): string {
-    if (value === null || value === undefined) {
-      return '-';
-    }
-
-    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-      return String(value);
-    }
-
-    if (Array.isArray(value)) {
-      return value.map((item) => this.stringifyValue(item)).join(', ');
-    }
-
-    try {
-      return JSON.stringify(value);
-    } catch {
-      return String(value);
-    }
+    const payload = data as { plan?: DietPlan; updatedAt?: string };
+    this.plan = payload.plan ?? null;
+    this.updatedAt = payload.updatedAt ?? '';
   }
 }

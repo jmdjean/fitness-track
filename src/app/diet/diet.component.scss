@@ -10,33 +10,156 @@
 }
 
 .diet-card {
-  width: min(900px, 100%);
+  width: min(1100px, 100%);
+  background: #f8fafc;
+  color: #0f172a;
 }
 
 .diet-content {
   margin-bottom: 16px;
 }
 
-.diet-list {
-  margin: 0 0 16px;
-  display: grid;
-  gap: 8px;
+.diet-meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
 }
 
-.diet-row {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 12px;
+.meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.diet-row dt {
+.meta-label {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.meta-value {
   font-weight: 600;
 }
 
-.diet-row dd {
+.diet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.diet-panel {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.diet-panel h3 {
+  margin: 0 0 12px;
+}
+
+.diet-panel ul {
   margin: 0;
-  color: rgba(0, 0, 0, 0.7);
-  white-space: pre-line;
+  padding-left: 18px;
+}
+
+.diet-days {
+  display: grid;
+  gap: 20px;
+}
+
+.diet-day {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.day-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.day-header h3 {
+  margin: 0;
+}
+
+.day-notes {
+  color: rgba(15, 23, 42, 0.6);
+  font-size: 0.9rem;
+}
+
+.meals {
+  display: grid;
+  gap: 12px;
+}
+
+.meal-card {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.meal-header h4 {
+  margin: 0;
+}
+
+.meal-calories {
+  font-weight: 600;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.meal-card ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.meal-card li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.meal-item {
+  font-weight: 500;
+}
+
+.meal-qty {
+  color: rgba(15, 23, 42, 0.6);
+}
+
+.diet-notes {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.diet-notes h3 {
+  margin: 0 0 10px;
+}
+
+.diet-notes ul {
+  margin: 0;
+  padding-left: 18px;
 }
 
 .diet-empty {
@@ -45,7 +168,7 @@
 }
 
 @media (max-width: 900px) {
-  .diet-row {
+  .diet-grid {
     grid-template-columns: 1fr;
   }
 }
