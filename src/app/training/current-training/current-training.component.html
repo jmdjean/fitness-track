@@ -4,94 +4,62 @@
   </div>
 
   <mat-card-content class="border-t border-border">
-    <div *ngIf="workouts.length; else emptyState" class="relative overflow-auto">
-      <table
-        mat-table
-        [dataSource]="workouts"
-        multiTemplateDataRows
-        class="min-w-full"
-      >
-        <ng-container matColumnDef="expand">
-          <th mat-header-cell *matHeaderCellDef aria-label="Expandir" class="font-semibold text-sm pl-0!"></th>
-          <td mat-cell *matCellDef="let workout" class="pl-0!">
-            <button
-              mat-icon-button
-              aria-label="Expandir linha"
-              (click)="toggleRow(workout); $event.stopPropagation()"
-            >
-              <mat-icon>
-                {{ expandedElement === workout ? 'expand_less' : 'expand_more' }}
-              </mat-icon>
-            </button>
+    <div class="search-row px-6 pb-4">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar treino</mat-label>
+        <input
+          #searchInput
+          matInput
+          type="text"
+          placeholder="Nome do treino"
+          [value]="searchTerm()"
+          (input)="onSearch(searchInput.value)"
+        />
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="workouts.length; else emptyState" class="relative overflow-auto px-6 pb-6">
+      <table mat-table [dataSource]="workouts" class="min-w-full">
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Acoes</th>
+          <td mat-cell *matCellDef="let workout">
+            <div class="actions-cell">
+              <button
+                mat-icon-button
+                aria-label="Ver detalhes"
+                class="action-view"
+                (click)="openDetails(workout, $event)"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                aria-label="Excluir treino"
+                class="action-delete"
+                (click)="deleteWorkout(workout, $event)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Nome</th>
+          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Treino</th>
           <td mat-cell *matCellDef="let workout" class="whitespace-nowrap">
             {{ workout.name }}
           </td>
         </ng-container>
 
         <ng-container matColumnDef="quantity">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Qtd. exercícios</th>
+          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Qtd. exercicios</th>
           <td mat-cell *matCellDef="let workout" class="whitespace-nowrap">
             {{ totalExercises(workout) }}
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm text-end!">Ações</th>
-          <td mat-cell *matCellDef="let workout" class="text-end! whitespace-nowrap">
-            <button
-              mat-icon-button
-              color="warn"
-              aria-label="Excluir treino"
-              (click)="deleteWorkout(workout, $event)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="expandedDetail">
-          <td mat-cell *matCellDef="let workout" [attr.colspan]="displayedColumns.length">
-            <div
-              class="element-detail"
-              [@detailExpand]="workout === expandedElement ? 'expanded' : 'collapsed'"
-            >
-              <div class="detail-content">
-                <span class="detail-label">Exercícios</span>
-                <table class="detail-table">
-                  <thead>
-                    <tr>
-                      <th>Exercício</th>
-                      <th>Séries</th>
-                      <th>Repetições</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let exercise of workout.exercises">
-                      <td>{{ exercise.exercise }}</td>
-                      <td>{{ exercise.sets }}</td>
-                      <td>{{ exercise.reps }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </td>
-        </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns;"
-          class="element-row"
-          [class.expanded]="expandedElement === row"
-          (click)="toggleRow(row)"
-        ></tr>
-        <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="detail-row"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
   </mat-card-content>
@@ -100,7 +68,7 @@
 <ng-template #emptyState>
   <mat-card class="cardWithShadow theme-card empty-state-card">
     <mat-card-content>
-      <p>Você não possui treinos ainda</p>
+      <p>Voce nao possui treinos ainda</p>
     </mat-card-content>
   </mat-card>
 </ng-template>

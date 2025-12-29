@@ -1,97 +1,128 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { delay } from 'rxjs/operators';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
-import { TrainingStatus } from '../../shared/enums/training-status.enum';
-import { TrainingGetAll } from '../../shared/models/training-get-all.model';
 import { LoadingService } from '../../shared/services/loading.service';
-import { TrainingService } from '../training.service';
+import { NotificationHelperService } from '../../shared/services/notification-helper.service';
+import { type IWorkout } from '../../shared/models/workout-exercises.model';
+import {
+  type WorkoutDoneCreatePayload,
+  WorkoutService,
+} from '../workout.service';
 
 @Component({
   selector: 'app-finished-traning',
   templateUrl: './finished-traning.component.html',
   styleUrls: ['./finished-traning.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state(
-        'collapsed',
-        style({ height: '0px', minHeight: '0', visibility: 'hidden' })
-      ),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ),
-    ]),
-  ],
   standalone: false,
 })
 export class FinishedTraningComponent implements OnInit {
-  displayedColumns: Array<keyof TrainingGetAll | 'actions' | 'expand'> = [
-    'expand',
-    'actions',
-    'status',
-    'exerciseDate',
-    'timeCompleted',
-    'quantidadeExercicios',
-  ];
-  trainings: TrainingGetAll[] = [];
-  trainingStatus = TrainingStatus;
-  expandedElement: TrainingGetAll | null = null;
+  workouts: IWorkout[] = [];
+  selectedWorkoutId = '';
+  exerciseRows: WorkoutExerciseRow[] = [];
 
   constructor(
-    private treinoService: TrainingService,
-    private dialog: MatDialog,
-    private loadingService: LoadingService
+    private workoutService: WorkoutService,
+    private loadingService: LoadingService,
+    private notificationHelper: NotificationHelperService
   ) {}
 
   ngOnInit(): void {
-    this.loadTrainings();
+    this.loadWorkouts();
   }
 
-  toggleRow(element: TrainingGetAll): void {
-    this.expandedElement = this.expandedElement === element ? null : element;
+  onWorkoutChange(workoutId: string): void {
+    this.selectedWorkoutId = workoutId;
+    const workout = this.workouts.find((item) => item.id === workoutId);
+    if (!workout) {
+      this.exerciseRows = [];
+      return;
+    }
+
+    this.exerciseRows = workout.exercises.map((exercise) => ({
+      id: exercise.id,
+      name: exercise.exercise,
+      sets: exercise.sets,
+      reps: exercise.reps,
+      weightKg: 0,
+      locked: false,
+    }));
   }
 
-  deleteTraining(training: TrainingGetAll, event: Event): void {
-    event.stopPropagation();
-    const trainingDateFormatted = this.formatDate(training.exerciseDate);
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        title: 'Confirmar exclusão',
-        message: `Tem certeza que deseja excluir o treino de ${trainingDateFormatted}?`,
-        actionButtonText: 'Excluir',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.trainings = this.trainings.filter((t) => t.id !== training.id);
+  toggleRowLock(row: WorkoutExerciseRow): void {
+    if (!row.locked) {
+      if (!this.isRowValid(row)) {
+        return;
       }
-    });
+      row.locked = true;
+      return;
+    }
+
+    row.locked = false;
   }
 
-  private formatDate(date: Date): string {
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
+  canSave(): boolean {
+    return (
+      !!this.selectedWorkoutId &&
+      this.exerciseRows.length > 0 &&
+      this.exerciseRows.every((row) => row.locked && this.isRowValid(row))
+    );
   }
 
-  private loadTrainings(): void {
+  save(): void {
+    if (!this.canSave()) {
+      return;
+    }
+
+    const payload: WorkoutDoneCreatePayload = {
+      workoutId: this.selectedWorkoutId,
+      exercises: this.exerciseRows.map((row) => ({
+        exerciseId: row.id,
+        sets: row.sets,
+        reps: row.reps,
+        weightKg: row.weightKg,
+      })),
+    };
+
     this.loadingService
-      .track(this.treinoService.getAll().pipe(delay(1000)))
+      .track(this.workoutService.createDone(payload))
+      .subscribe({
+        next: () => {
+          this.notificationHelper.showSuccess('Treino finalizado com sucesso.');
+          this.selectedWorkoutId = '';
+          this.exerciseRows = [];
+        },
+        error: (request) => {
+          this.notificationHelper.showError(
+            request?.error?.error ?? 'Erro ao finalizar treino.'
+          );
+        },
+      });
+  }
+
+  private isRowValid(row: WorkoutExerciseRow): boolean {
+    return (
+      Number.isFinite(row.sets) &&
+      Number.isFinite(row.reps) &&
+      Number.isFinite(row.weightKg) &&
+      row.sets > 0 &&
+      row.reps > 0 &&
+      row.weightKg >= 0
+    );
+  }
+
+  private loadWorkouts(): void {
+    this.loadingService
+      .track(this.workoutService.getAll().pipe(delay(1000)))
       .subscribe((data) => {
-        this.trainings = data;
+        this.workouts = data;
       });
   }
 }
+
+type WorkoutExerciseRow = {
+  id: string;
+  name: string;
+  sets: number;
+  reps: number;
+  weightKg: number;
+  locked: boolean;
+};

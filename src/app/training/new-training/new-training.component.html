@@ -1,15 +1,14 @@
 <section class="training-form">
   <mat-card class="training-card">
     <div class="card-header">
-      <h2>Montar treino</h2>
-      <p>Cadastre um novo treino</p>
+      <h2>Cadastre um novo treino</h2>
     </div>
 
     <div class="form-grid">
       <div class="form-block">
         <label class="field-label">Nome do treino</label>
         <mat-form-field appearance="outline" class="full-field" color="primary">
-          <input matInput type="text" [field]="workoutForm.name" placeholder="Ex.: Treino A" />
+          <input matInput type="text" [field]="workoutForm.name" />
         </mat-form-field>
       </div>
 
@@ -62,6 +61,7 @@
             <div class="row-actions">
               <button
                 mat-icon-button
+                class="action-add"
                 aria-label="Adicionar exercício"
                 (click)="addExerciseRow()"
               >
@@ -69,7 +69,7 @@
               </button>
               <button
                 mat-icon-button
-                color="warn"
+                class="action-delete"
                 aria-label="Remover exercício"
                 (click)="removeExerciseRow(i)"
               >

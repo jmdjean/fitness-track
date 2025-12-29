@@ -12,6 +12,7 @@ import { QuestionService } from './question.service';
 export class QuestionsComponent {
   question = '';
   responseMessage = '';
+  responseRawEntries: Array<{ key: string; value: string }> = [];
 
   constructor(
     private questionService: QuestionService,
@@ -30,10 +31,12 @@ export class QuestionsComponent {
       .subscribe({
         next: (response) => {
           this.responseMessage = this.formatResponse(response);
+          this.responseRawEntries = this.extractRawEntries(response);
           this.question = '';
         },
         error: (request) => {
           this.responseMessage = '';
+          this.responseRawEntries = [];
           console.log(request);
           this.notificationHelper.showError(
             request?.error?.error ?? 'Erro ao enviar pergunta.'
@@ -63,5 +66,40 @@ export class QuestionsComponent {
     }
 
     return 'Pergunta enviada com sucesso.';
+  }
+
+  private extractRawEntries(response: any): Array<{ key: string; value: string }> {
+    if (!response || typeof response !== 'object') {
+      return [];
+    }
+
+    const list = Array.isArray(response.data) ? response.data : null;
+    if (list && list.length && typeof list[0] === 'object' && list[0] !== null) {
+      return Object.entries(list[0]).map(([key, value]) => ({
+        key,
+        value: this.stringifyValue(value),
+      }));
+    }
+
+    return Object.entries(response).map(([key, value]) => ({
+      key,
+      value: this.stringifyValue(value),
+    }));
+  }
+
+  private stringifyValue(value: unknown): string {
+    if (value === null || value === undefined) {
+      return '-';
+    }
+
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+      return String(value);
+    }
+
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return String(value);
+    }
   }
 }

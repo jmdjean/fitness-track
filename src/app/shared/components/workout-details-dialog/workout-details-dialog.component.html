@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Treino: {{ data.name }}</h2>
+
+<mat-dialog-content>
+  <div class="detail-content">
+    <span class="detail-label">Exercicios</span>
+    <table class="detail-table">
+      <thead>
+        <tr>
+          <th>Exercicio</th>
+          <th>Sets</th>
+          <th>Reps</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exercise of data.exercises">
+          <td>{{ exercise.exercise }}</td>
+          <td>{{ exercise.sets }}</td>
+          <td>{{ exercise.reps }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Fechar</button>
+</mat-dialog-actions>

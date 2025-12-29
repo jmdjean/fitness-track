@@ -1,0 +1,26 @@
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--mat-sys-on-background);
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+  text-align: left;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+
+.detail-table thead th {
+  font-weight: 600;
+}

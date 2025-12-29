@@ -4,7 +4,7 @@
   <mat-sidenav-container class="app-shell">
     <mat-sidenav #sidenav mode="side" role="navigation" class="app-sidenav" opened>
       <div class="sidenav-header">
-        <span class="sidenav-title">Fitness Track</span>
+        <img class="sidenav-logo" src="/assets/images/fitness-track-logoo.png" alt="Fitness Track Logo" />
       </div>
       <nav class="side-nav-links">
         <button mat-button routerLink="/new-training">
@@ -23,18 +23,25 @@
           <mat-icon>help_outline</mat-icon>
           Consulte
         </button>
+        <button mat-button routerLink="/ask-workout-form">
+          <mat-icon>question_answer</mat-icon>
+          Pergunte sobre os treinos
+        </button>
       </nav>
     </mat-sidenav>
     <mat-sidenav-content>
       <mat-toolbar class="app-toolbar">
-        <button
-          mat-icon-button
-          aria-label="Abrir menu"
-          class="mobile-only"
-          (click)="onToggle()"
-        >
-          <mat-icon>menu</mat-icon>
-        </button>
+        <div class="toolbar-left">
+          <button
+            mat-icon-button
+            aria-label="Abrir menu"
+            class="mobile-only"
+            (click)="onToggle()"
+          >
+            <mat-icon>menu</mat-icon>
+          </button>
+          <span class="app-title">Fitness Track</span>
+        </div>
         <span class="spacer"></span>
 
         <button

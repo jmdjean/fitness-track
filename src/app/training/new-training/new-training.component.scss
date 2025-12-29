@@ -74,7 +74,15 @@
   display: inline-flex;
   gap: 6px;
   align-items: center;
-  padding-bottom: 6px;
+  align-self: end;
+}
+
+.action-add mat-icon {
+  color: #22c55e;
+}
+
+.action-delete mat-icon {
+  color: #ef4444;
 }
 
 @media (max-width: 960px) {

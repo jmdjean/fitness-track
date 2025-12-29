@@ -25,3 +25,35 @@
   font-weight: 600;
   color: rgba(0, 0, 0, 0.7);
 }
+
+.response-raw {
+  display: grid;
+  gap: 8px;
+}
+
+.response-raw h3 {
+  margin: 8px 0 0;
+  font-size: 1rem;
+}
+
+.response-raw dl {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.raw-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+}
+
+.raw-row dt {
+  font-weight: 600;
+}
+
+.raw-row dd {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.7);
+  word-break: break-word;
+}

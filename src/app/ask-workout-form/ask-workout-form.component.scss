@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.ask-workout-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ask-workout-card {
+  width: min(720px, 100%);
+}
+
+.ask-workout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ask-field {
+  width: 100%;
+}

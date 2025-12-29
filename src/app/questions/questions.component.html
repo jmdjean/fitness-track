@@ -28,6 +28,15 @@
         </button>
         <h2>Resposta:</h2>
         <p *ngIf="responseMessage" class="response-message">{{ responseMessage }}</p>
+        <div *ngIf="responseRawEntries.length" class="response-raw">
+          <h3>Raw</h3>
+          <dl>
+            <div *ngFor="let entry of responseRawEntries" class="raw-row">
+              <dt>{{ entry.key }}</dt>
+              <dd>{{ entry.value }}</dd>
+            </div>
+          </dl>
+        </div>
       </form>
     </mat-card-content>
   </mat-card>

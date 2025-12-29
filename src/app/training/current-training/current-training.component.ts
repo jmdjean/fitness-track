@@ -1,20 +1,14 @@
 import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import {
   Component,
   EventEmitter,
-  OnDestroy,
   OnInit,
   Output,
+  signal,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { delay } from 'rxjs/operators';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { WorkoutDetailsDialogComponent } from '../../shared/components/workout-details-dialog/workout-details-dialog.component';
 import { IWorkout } from '../../shared/models/workout-exercises.model';
 import { LoadingService } from '../../shared/services/loading.service';
 import { WorkoutService } from '../workout.service';
@@ -23,33 +17,19 @@ import { WorkoutService } from '../workout.service';
   selector: 'app-current-training',
   templateUrl: './current-training.component.html',
   styleUrls: ['./current-training.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state(
-        'collapsed',
-        style({ height: '0px', minHeight: '0', visibility: 'hidden' })
-      ),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition(
-        'expanded <=> collapsed',
-        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
-      ),
-    ]),
-  ],
   standalone: false,
 })
-export class CurrentTrainingComponent implements OnInit, OnDestroy {
+export class CurrentTrainingComponent implements OnInit {
   @Output() stopTraining = new EventEmitter<void>();
   remainingSeconds = 0;
   totalSeconds = 0;
   private timerId: number | null = null;
   workouts: IWorkout[] = [];
-  expandedElement: IWorkout | null = null;
-  displayedColumns: Array<'expand' | 'name' | 'quantity' | 'actions'> = [
-    'expand',
+  readonly searchTerm = signal('');
+  displayedColumns: Array<'actions' | 'name' | 'quantity'> = [
+    'actions',
     'name',
     'quantity',
-    'actions',
   ];
 
   constructor(
@@ -62,14 +42,21 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
     this.loadWorkouts();
   }
 
-  ngOnDestroy(): void {}
-
-  toggleRow(workout: IWorkout): void {
-    this.expandedElement = this.expandedElement === workout ? null : workout;
+  onSearch(value: string): void {
+    this.searchTerm.set(value);
+    this.loadWorkouts(value);
   }
 
   totalExercises(workout: IWorkout): number {
     return workout.exercises.length;
+  }
+
+  openDetails(workout: IWorkout, event: Event): void {
+    event.stopPropagation();
+    this.dialog.open(WorkoutDetailsDialogComponent, {
+      width: '520px',
+      data: workout,
+    });
   }
 
   deleteWorkout(workout: IWorkout, event: Event): void {
@@ -96,9 +83,9 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadWorkouts(): void {
+  private loadWorkouts(searchTerm = ''): void {
     this.loadingService
-      .track(this.workoutService.getAll().pipe(delay(1000)))
+      .track(this.workoutService.getAllByName(searchTerm).pipe(delay(1000)))
       .subscribe((data) => {
         this.workouts = data;
       });

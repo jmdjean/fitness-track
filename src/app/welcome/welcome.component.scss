@@ -23,7 +23,7 @@
 .welcome-content {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
 }
 
 .welcome-content h2 {
@@ -38,8 +38,8 @@
 }
 
 .welcome-avatar {
-  width: 64px;
-  height: 64px;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
   border: 3px solid rgba(255, 255, 255, 0.4);
   object-fit: cover;

@@ -10,49 +10,28 @@ table {
   width: 100%;
 }
 
-.element-row {
-  cursor: pointer;
-}
-
-.element-row:hover {
-  background-color: rgba(148, 163, 184, 0.12);
-}
-
-.detail-row {
-  height: 0;
-}
-
-.element-detail {
-  overflow: hidden;
-}
-
-.detail-content {
+.search-row {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 12px 0 4px;
-  border-top: 1px solid var(--mat-sys-outline-variant);
+  justify-content: flex-start;
 }
 
-.detail-label {
-  font-weight: 600;
-  color: var(--mat-sys-on-background);
-}
-
-.detail-table {
+.search-field {
   width: 100%;
-  border-collapse: collapse;
+  max-width: 360px;
 }
 
-.detail-table th,
-.detail-table td {
-  text-align: left;
-  padding: 6px 8px;
-  font-size: 0.9rem;
+.actions-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.detail-table thead th {
-  font-weight: 600;
+.action-view mat-icon {
+  color: #3b82f6;
+}
+
+.action-delete mat-icon {
+  color: #ef4444;
 }
 
 .empty-state-card {

@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../auth/auth.service';
 import { API_URLS } from '../shared/config/urls';
 import { MOCK_WORKOUTS } from '../shared/mocks/mock-workouts';
+import { type WorkoutDone } from '../shared/models/workout-done.model';
 import { IWorkout } from '../shared/models/workout-exercises.model';
 
 @Injectable({
@@ -24,6 +26,42 @@ export class WorkoutService {
     return this.http.get<IWorkout[]>(`${environment.apiBaseUrl}${API_URLS.workouts}`);
   }
 
+  getAllByName(name: string): Observable<IWorkout[]> {
+    return this.getAll().pipe(
+      map((workouts) => {
+        const term = name.trim().toLowerCase();
+        if (!term) {
+          return workouts;
+        }
+
+        return workouts.filter((workout) =>
+          (workout.name ?? '').toLowerCase().includes(term)
+        );
+      })
+    );
+  }
+
+  getDones(): Observable<WorkoutDone[]> {
+    if (environment.useMocks) {
+      return of([]);
+    }
+
+    return this.http.get<WorkoutDone[]>(
+      `${environment.apiBaseUrl}${API_URLS.workoutDones}`
+    );
+  }
+
+  askDonesQuestion(payload: { question: string }): Observable<{ data?: string[]; raw?: unknown[] }> {
+    if (environment.useMocks) {
+      return of({ data: [], raw: [] });
+    }
+
+    return this.http.post<{ data?: string[]; raw?: unknown[] }>(
+      `${environment.apiBaseUrl}${API_URLS.workoutDonesQuestion}`,
+      payload
+    );
+  }
+
   create(payload: WorkoutCreatePayload): Observable<unknown> {
     if (environment.useMocks) {
       return of({ ok: true });
@@ -35,6 +73,17 @@ export class WorkoutService {
     return this.http.post<unknown>(
       `${environment.apiBaseUrl}${API_URLS.workouts}`,
       payloadWithUser
+    );
+  }
+
+  createDone(payload: WorkoutDoneCreatePayload): Observable<unknown> {
+    if (environment.useMocks) {
+      return of({ ok: true });
+    }
+
+    return this.http.post<unknown>(
+      `${environment.apiBaseUrl}${API_URLS.workoutDones}`,
+      payload
     );
   }
 
@@ -78,4 +127,14 @@ export type WorkoutCreatePayload = {
   }>;
   quantityCalories: number;
   userId?: string;
+};
+
+export type WorkoutDoneCreatePayload = {
+  workoutId: string;
+  exercises: Array<{
+    exerciseId: string;
+    sets: number;
+    reps: number;
+    weightKg: number;
+  }>;
 };

@@ -7,12 +7,14 @@ import { CurrentTrainingComponent } from './training/current-training/current-tr
 import { FinishedTraningComponent } from './training/finished-traning/finished-traning.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { AskWorkoutFormComponent } from './ask-workout-form/ask-workout-form.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'questions', component: QuestionsComponent },
+  { path: 'ask-workout-form', component: AskWorkoutFormComponent },
   { path: 'new-training', component: NewTrainingComponent },
   { path: 'current-training', component: CurrentTrainingComponent },
   { path: 'finished-traning', component: FinishedTraningComponent },

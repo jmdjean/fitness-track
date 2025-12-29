@@ -1,108 +1,106 @@
-<div class="page-header">
-  <mat-icon>fitness_center</mat-icon>
-  <h1>Treinos feitos</h1>
-</div>
+<section class="training-form">
+  <mat-card class="training-card">
+    <div class="card-header">
+      <h2>Finalizar treino</h2>
+      <p>Selecione um treino e registre as cargas.</p>
+    </div>
 
-<div *ngIf="trainings.length; else emptyState" class="table-wrapper mat-elevation-z1">
-  <table
-    mat-table
-    [dataSource]="trainings"
-    multiTemplateDataRows
-    class="mat-elevation-z0"
-  >
-    <ng-container matColumnDef="expand">
-      <th mat-header-cell *matHeaderCellDef aria-label="Expandir"></th>
-      <td mat-cell *matCellDef="let training">
-        <button
-          mat-icon-button
-          aria-label="Expandir linha"
-          (click)="toggleRow(training); $event.stopPropagation()"
-        >
-          <mat-icon>
-            {{ expandedElement === training ? 'expand_less' : 'expand_more' }}
-          </mat-icon>
-        </button>
-      </td>
-    </ng-container>
+    <div class="form-grid">
+      <div class="form-block">
+        <label class="field-label">Treino</label>
+        <mat-form-field appearance="outline" class="full-field" color="primary">
+          <mat-select [value]="selectedWorkoutId" (selectionChange)="onWorkoutChange($event.value)">
+            <mat-option *ngFor="let workout of workouts" [value]="workout.id">
+              {{ workout.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-    <ng-container matColumnDef="exerciseDate">
-      <th mat-header-cell *matHeaderCellDef>Data</th>
-      <td mat-cell *matCellDef="let training">
-        {{ training.exerciseDate | date: 'dd/MM/yyyy - HH:mm' }}
-      </td>
-    </ng-container>
+      <div class="form-block" *ngIf="exerciseRows.length">
+        <div class="section-title">Exercícios</div>
+        <div class="exercise-list">
+          <div class="exercise-row" *ngFor="let row of exerciseRows">
+            <div class="field-group">
+              <label class="field-label">Exercício</label>
+              <div class="field-value">{{ row.name }}</div>
+            </div>
 
-    <ng-container matColumnDef="timeCompleted">
-      <th mat-header-cell *matHeaderCellDef>Tempo feito</th>
-      <td mat-cell *matCellDef="let training">
-        {{ training.timeCompleted | formatDuration }}
-      </td>
-    </ng-container>
+            <div class="field-group">
+              <label class="field-label">Séries</label>
+              <mat-form-field appearance="outline" class="full-field" color="primary">
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  [value]="row.sets"
+                  [disabled]="row.locked"
+                  (input)="row.sets = $any($event.target).valueAsNumber"
+                />
+              </mat-form-field>
+            </div>
 
-    <ng-container matColumnDef="quantidadeExercicios">
-      <th mat-header-cell *matHeaderCellDef>Qtd. exercícios</th>
-      <td mat-cell *matCellDef="let training">{{ training.quantidadeExercicios }}</td>
-    </ng-container>
+            <div class="field-group">
+              <label class="field-label">Repetições</label>
+              <mat-form-field appearance="outline" class="full-field" color="primary">
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  [value]="row.reps"
+                  [disabled]="row.locked"
+                  (input)="row.reps = $any($event.target).valueAsNumber"
+                />
+              </mat-form-field>
+            </div>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let training">
-        <app-tag-spec
-          [icon]="training.status === trainingStatus.Completo ? 'check' : 'close'"
-          [variant]="training.status === trainingStatus.Completo ? 'growing' : 'low'"
-        ></app-tag-spec>
-      </td>
-    </ng-container>
+            <div class="field-group">
+              <label class="field-label">Peso (kg)</label>
+              <mat-form-field appearance="outline" class="full-field" color="primary">
+                <input
+                  matInput
+                  type="number"
+                  min="0"
+                  [value]="row.weightKg"
+                  [disabled]="row.locked"
+                  (input)="row.weightKg = $any($event.target).valueAsNumber"
+                />
+              </mat-form-field>
+            </div>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Ações</th>
-      <td mat-cell *matCellDef="let training">
-        <button
-          mat-icon-button
-          color="warn"
-          aria-label="Excluir treino"
-          (click)="deleteTraining(training, $event)"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let training" [attr.colspan]="displayedColumns.length">
-        <div
-          class="element-detail"
-          [@detailExpand]="training === expandedElement ? 'expanded' : 'collapsed'"
-        >
-          <div class="detail-content">
-            <span class="detail-label">Exercícios</span>
-            <mat-chip-set class="detail-chips" aria-label="Exercícios">
-              <mat-chip *ngFor="let exercise of training.exercises">
-                {{ exercise.name }}
-              </mat-chip>
-            </mat-chip-set>
+            <div class="row-actions">
+              <button
+                mat-icon-button
+                color="primary"
+                aria-label="Confirmar linha"
+                [disabled]="row.locked"
+                (click)="toggleRowLock(row)"
+              >
+                <mat-icon>{{ row.locked ? 'check_circle' : 'check' }}</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                aria-label="Editar linha"
+                [disabled]="!row.locked"
+                (click)="toggleRowLock(row)"
+              >
+                <mat-icon>{{ row.locked ? 'edit' : 'edit_off' }}</mat-icon>
+              </button>
+            </div>
           </div>
         </div>
-      </td>
-    </ng-container>
+      </div>
+    </div>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns;"
-      class="element-row"
-      [class.expanded]="expandedElement === row"
-      (click)="toggleRow(row)"
-    ></tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail'];" class="detail-row"></tr>
-  </table>
-</div>
-
-<ng-template #emptyState>
-  <div class="empty-state">
-    <p>Você não possui treinos ainda</p>
-    <button mat-raised-button color="primary" routerLink="/new-training">
-      Montar um treino
-    </button>
-  </div>
-</ng-template>
+    <mat-card-actions align="end">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="save()"
+        [disabled]="!canSave()"
+      >
+        Salvar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</section>

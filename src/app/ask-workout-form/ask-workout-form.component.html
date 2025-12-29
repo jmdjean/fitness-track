@@ -1,0 +1,37 @@
+<section class="ask-workout-page">
+  <mat-card class="ask-workout-card">
+    <mat-card-title>Pergunte sobre os treinos</mat-card-title>
+    <mat-card-content>
+      <form class="ask-workout-form" autocomplete="off" (ngSubmit)="onSendClick()">
+        <mat-form-field appearance="fill" class="ask-field">
+          <mat-label>Faca a sua pergunta</mat-label>
+          <textarea
+            matInput
+            rows="6"
+            [(ngModel)]="question"
+            name="question"
+            #questionModel="ngModel"
+            required
+            autocomplete="off"
+          ></textarea>
+          <mat-error *ngIf="questionModel.invalid && (questionModel.dirty || questionModel.touched)"
+            >Pergunta obrigatoria</mat-error
+          >
+        </mat-form-field>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="questionModel.invalid"
+        >
+          Enviar
+        </button>
+        <h2>Resposta:</h2>
+        <p *ngIf="responseText">Resposta: {{ responseText }}</p>
+        <ul *ngIf="responseRaw.length">
+          <li *ngFor="let item of responseRaw">{{ item }}</li>
+        </ul>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>
