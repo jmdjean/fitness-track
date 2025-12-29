@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { LoadingService } from '../shared/services/loading.service';
 import { NotificationHelperService } from '../shared/services/notification-helper.service';
+import {
+  formatResponse,
+  normalizeRawEntries,
+  type ResponseRawEntries,
+} from '../shared/utils/question-response.util';
 import { WorkoutService } from '../training/workout.service';
 
 @Component({
@@ -11,8 +16,8 @@ import { WorkoutService } from '../training/workout.service';
 })
 export class AskWorkoutFormComponent {
   question = '';
-  responseText = '';
-  responseRaw: string[] = [];
+  responseMessage = '';
+  responseRawEntries: ResponseRawEntries = [];
 
   constructor(
     private workoutService: WorkoutService,
@@ -29,30 +34,19 @@ export class AskWorkoutFormComponent {
     this.loadingService
       .track(this.workoutService.askDonesQuestion({ question }))
       .subscribe({
-        next: (response) => {
-          this.responseText = response?.data?.[0] ?? '';
-          this.responseRaw = this.normalizeRaw(response?.raw);
-          this.question = '';
+        next: (response: unknown) => {
+          this.responseMessage = formatResponse(response);
+          this.responseRawEntries = normalizeRawEntries(
+            (response as { raw?: unknown })?.raw
+          );
         },
         error: (request) => {
-          this.responseText = '';
-          this.responseRaw = [];
+          this.responseMessage = '';
+          this.responseRawEntries = [];
           this.notificationHelper.showError(
             request?.error?.error ?? 'Erro ao enviar pergunta.'
           );
         },
       });
-  }
-
-  private normalizeRaw(raw: unknown): string[] {
-    if (Array.isArray(raw)) {
-      return raw.map((item) => (typeof item === 'string' ? item : JSON.stringify(item)));
-    }
-
-    if (raw === null || raw === undefined) {
-      return [];
-    }
-
-    return [typeof raw === 'string' ? raw : JSON.stringify(raw)];
   }
 }

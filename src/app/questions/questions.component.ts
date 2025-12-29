@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { LoadingService } from '../shared/services/loading.service';
 import { NotificationHelperService } from '../shared/services/notification-helper.service';
+import {
+  formatResponse,
+  normalizeRawEntries,
+  type ResponseRawEntries,
+} from '../shared/utils/question-response.util';
 import { QuestionService } from './question.service';
 
 @Component({
@@ -12,7 +17,7 @@ import { QuestionService } from './question.service';
 export class QuestionsComponent {
   question = '';
   responseMessage = '';
-  responseRawEntries: Array<{ key: string; value: string }> = [];
+  responseRawEntries: ResponseRawEntries = [];
 
   constructor(
     private questionService: QuestionService,
@@ -29,10 +34,11 @@ export class QuestionsComponent {
     this.loadingService
       .track(this.questionService.create({ question }))
       .subscribe({
-        next: (response) => {
-          this.responseMessage = this.formatResponse(response);
-          this.responseRawEntries = this.extractRawEntries(response);
-          this.question = '';
+        next: (response: unknown) => {
+          this.responseMessage = formatResponse(response);
+          this.responseRawEntries = normalizeRawEntries(
+            (response as { raw?: unknown })?.raw
+          );
         },
         error: (request) => {
           this.responseMessage = '';
@@ -47,59 +53,5 @@ export class QuestionsComponent {
 
   onSendClick(): void {
     this.submit();
-  }
-
-  private formatResponse(response: any): string {
-    if (typeof response === 'string') {
-      return response;
-    }
-
-    if (response && typeof response === 'object' && 'message' in response) {
-      const message = (response as { message?: unknown }).message;
-      if (typeof message === 'string') {
-        return message;
-      }
-    }
-
-    if(response && response.data[0]){
-      return response.data[0];
-    }
-
-    return 'Pergunta enviada com sucesso.';
-  }
-
-  private extractRawEntries(response: any): Array<{ key: string; value: string }> {
-    if (!response || typeof response !== 'object') {
-      return [];
-    }
-
-    const list = Array.isArray(response.data) ? response.data : null;
-    if (list && list.length && typeof list[0] === 'object' && list[0] !== null) {
-      return Object.entries(list[0]).map(([key, value]) => ({
-        key,
-        value: this.stringifyValue(value),
-      }));
-    }
-
-    return Object.entries(response).map(([key, value]) => ({
-      key,
-      value: this.stringifyValue(value),
-    }));
-  }
-
-  private stringifyValue(value: unknown): string {
-    if (value === null || value === undefined) {
-      return '-';
-    }
-
-    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-      return String(value);
-    }
-
-    try {
-      return JSON.stringify(value);
-    } catch {
-      return String(value);
-    }
   }
 }

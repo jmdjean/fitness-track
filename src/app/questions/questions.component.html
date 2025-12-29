@@ -1,43 +1,42 @@
 <section class="question-page">
-  <mat-card class="question-card">
-    <mat-card-title>Consulte os dados</mat-card-title>
-    <mat-card-content>
-      <form class="question-form" autocomplete="off" (ngSubmit)="onSendClick()">
-        <mat-form-field appearance="fill" class="question-field">
-          <mat-label>Faça a sua pergunta</mat-label>
-          <textarea
-            matInput
-            rows="6"
-            [(ngModel)]="question"
-            name="question"
-            #questionModel="ngModel"
-            required
-            autocomplete="off"
-          ></textarea>
-          <mat-error *ngIf="questionModel.invalid && (questionModel.dirty || questionModel.touched)"
-            >Pergunta obrigatória</mat-error
-          >
-        </mat-form-field>
-        <button
-          mat-flat-button
-          color="primary"
-          type="submit"
-          [disabled]="questionModel.invalid"
-        >
-          Enviar
-        </button>
-        <h2>Resposta:</h2>
+  <div class="question-grid">
+    <mat-card class="question-card">
+      <mat-card-title>Consulte os dados</mat-card-title>
+      <mat-card-content>
+        <form class="question-form" autocomplete="off" (ngSubmit)="onSendClick()">
+          <mat-form-field appearance="fill" class="question-field">
+            <mat-label>Faca a sua pergunta</mat-label>
+            <textarea
+              matInput
+              rows="6"
+              [(ngModel)]="question"
+              name="question"
+              autocomplete="off"
+            ></textarea>
+          </mat-form-field>
+          <button mat-flat-button color="primary" type="submit">Enviar</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="question-card result-card">
+      <mat-card-title>Retorno da busca</mat-card-title>
+      <mat-card-content
+        *ngIf="responseMessage || responseRawEntries.length"
+        class="result-content"
+      >
         <p *ngIf="responseMessage" class="response-message">{{ responseMessage }}</p>
         <div *ngIf="responseRawEntries.length" class="response-raw">
-          <h3>Raw</h3>
-          <dl>
-            <div *ngFor="let entry of responseRawEntries" class="raw-row">
-              <dt>{{ entry.key }}</dt>
-              <dd>{{ entry.value }}</dd>
-            </div>
-          </dl>
+          <div *ngFor="let entry of responseRawEntries" class="raw-workout">
+            <dl class="raw-list">
+              <div *ngFor="let item of entry" class="raw-row">
+                <dt>{{ item.key }}</dt>
+                <dd>{{ item.value }}</dd>
+              </div>
+            </dl>
+          </div>
         </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </section>
