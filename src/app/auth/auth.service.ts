@@ -81,8 +81,36 @@ export class AuthService {
     }
 
     const token = response.token ?? response.accessToken ?? null;
-    const user: AuthUser | string | null =
-      response.user ?? response.email ?? fallbackEmail ?? null;
+    const userId = response.userId ?? response.id;
+    const responseEmail = response.email ?? null;
+    const responseUser = response.user ?? null;
+    let user: AuthUser | string | null = null;
+
+    if (responseUser && typeof responseUser === 'object') {
+      user = { ...responseUser };
+    } else if (userId !== undefined && userId !== null) {
+      user = { id: userId };
+    } else if (typeof responseUser === 'string') {
+      user = responseUser;
+    } else if (responseEmail || fallbackEmail) {
+      user = { email: responseEmail ?? fallbackEmail };
+    }
+
+    if (user && typeof user === 'object') {
+      if (userId !== undefined && userId !== null && user.id === undefined) {
+        user = { ...user, id: userId };
+      }
+
+      const emailFromUserString = typeof responseUser === 'string' ? responseUser : null;
+      const email = responseEmail ?? emailFromUserString ?? fallbackEmail ?? null;
+      if (email && !user.email) {
+        user = { ...user, email };
+      }
+    }
+
+    if (!user) {
+      user = responseEmail ?? fallbackEmail ?? null;
+    }
 
     return { token, user };
   }
