@@ -4,7 +4,9 @@
   <mat-sidenav-container class="app-shell">
     <mat-sidenav #sidenav mode="side" role="navigation" class="app-sidenav" opened>
       <div class="sidenav-header">
-        <img class="sidenav-logo" src="/assets/images/fitness-track-logoo.png" alt="Fitness Track Logo" />
+        <a routerLink="/" aria-label="Ir para o inicio" class="sidenav-logo-link">
+          <img class="sidenav-logo" src="/assets/images/fitness-track-logoo.png" alt="Fitness Track Logo" />
+        </a>
       </div>
       <nav class="side-nav-links">
         <button mat-button routerLink="/new-training">
@@ -17,6 +19,10 @@
         </button>
         <button mat-button routerLink="/finished-traning">
           <mat-icon>list</mat-icon>
+          Apontar um treino
+        </button>
+        <button mat-button routerLink="/workout-dones">
+          <mat-icon>fact_check</mat-icon>
           Treinos feitos
         </button>
         <button mat-button routerLink="/questions">

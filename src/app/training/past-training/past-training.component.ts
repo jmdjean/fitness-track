@@ -57,7 +57,7 @@ export class PastTrainingComponent implements OnInit {
   }
 
   displayName(workout: WorkoutDone): string {
-    return workout.name || workout.workoutId;
+    return workout.workout?.name || workout.workout?.id || '';
   }
 
   private loadWorkouts(): void {

@@ -13,11 +13,11 @@
   background: #2a3f57;
   border-radius: 18px;
   color: #f8fafc;
-  padding: 24px 28px;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 12px;
 }
 
 .welcome-content {
@@ -46,7 +46,7 @@
 }
 
 .welcome-illustration img {
-  width: min(380px, 40vw);
+  width: min(240px, 30vw);
   max-width: 100%;
   height: auto;
 }

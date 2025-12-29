@@ -6,6 +6,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { CurrentTrainingComponent } from './training/current-training/current-training.component';
 import { FinishedTraningComponent } from './training/finished-traning/finished-traning.component';
 import { NewTrainingComponent } from './training/new-training/new-training.component';
+import { WorkoutDonesComponent } from './training/workout-dones/workout-dones.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { AskWorkoutFormComponent } from './ask-workout-form/ask-workout-form.component';
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'new-training', component: NewTrainingComponent },
   { path: 'current-training', component: CurrentTrainingComponent },
   { path: 'finished-traning', component: FinishedTraningComponent },
+  { path: 'workout-dones', component: WorkoutDonesComponent },
 ];
 
 @NgModule({

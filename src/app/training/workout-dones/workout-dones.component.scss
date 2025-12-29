@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.workout-dones-card {
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+.empty-state-card {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.empty-state-card p {
+  margin: 0;
+  font-weight: 600;
+}

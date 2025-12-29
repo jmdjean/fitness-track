@@ -7,8 +7,10 @@ export type WorkoutDoneExercise = {
 
 export type WorkoutDone = {
   id: string;
-  workoutId: string;
-  name: string;
+  workout: {
+    id: string;
+    name: string;
+  };
   exercises: WorkoutDoneExercise[];
   createdAt?: string;
 };

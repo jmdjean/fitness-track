@@ -14,7 +14,7 @@ export function formatResponse(response: unknown): string {
   }
 
   const data = (response as { data?: unknown })?.data;
-  if (Array.isArray(data) && typeof data[0] === 'string') {
+  if (Array.isArray(data) && typeof data[0] === 'string' && !data[0].includes('{')) {
     return data[0];
   }
 
