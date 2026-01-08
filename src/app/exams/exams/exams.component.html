@@ -1,0 +1,13 @@
+<section class="exam-page">
+  <div class="exam-grid">
+    <mat-card class="exam-card">
+      <mat-card-title>Exames</mat-card-title>
+      <mat-card-content>
+        <p *ngIf="!examData" class="exam-placeholder">
+          Nenhuma informacao de exame encontrada.
+        </p>
+        <pre *ngIf="examData" class="exam-json">{{ examData | json }}</pre>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>

@@ -32,6 +32,8 @@ import { FinishedTraningComponent } from './training/finished-traning/finished-t
 import { NewTrainingComponent } from './training/new-training/new-training.component';
 import { PastTrainingComponent } from './training/past-training/past-training.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { ImportExamComponent } from './exams/import-exam/import-exam.component';
+import { ExamsComponent } from './exams/exams/exams.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +55,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
     PastTrainingComponent,
     QuestionsComponent,
     WelcomeComponent,
+    ImportExamComponent,
+    ExamsComponent,
   ],
   imports: [
     BrowserModule,

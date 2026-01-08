@@ -11,6 +11,8 @@ export const API_URLS = {
   exercises: '/exercises',
   dietLatest: '/diet/latest',
   dietGenerate: '/diet/generate',
+  examsImport: '/exams/import',
+  examsByUser: (userId: string) => `/exams/${userId}`,
   authRegister: '/auth/register',
   authLogin: '/auth/login',
 } as const;
